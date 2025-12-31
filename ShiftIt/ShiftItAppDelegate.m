@@ -17,7 +17,6 @@
  
  */
 
-#import <Sparkle/Sparkle.h>
 #import "SBSystemPreferences.h"
 #import "ShiftItAppDelegate.h"
 #import "ShiftItApp.h"
@@ -722,28 +721,5 @@ NSDictionary *allShiftActions = nil;
 
     [self invokeShiftItActionByIdentifier_:identifier];
 }
-
-// This method allows you to add extra parameters to the appcast URL,
-// potentially based on whether or not Sparkle will also be sending along
-// the system profile. This method should return an array of dictionaries
-// with keys: "key", "value", "displayKey", "displayValue", the latter two
-// being human-readable variants of the former two.
-- (NSArray *)feedParametersForUpdater:(SUUpdater *)updater
-                 sendingSystemProfile:(BOOL)sendingProfile {
-    NSMutableArray *a = [NSMutableArray arrayWithArray:[usageStatistics_ toSparkle]];
-
-    // get display information
-    NSArray *screens = [NSScreen screens];
-    NSInteger nScreen = [screens count];
-    [a addObject:FMTEncodeForSparkle(@"n_screens", FMTStr(@"%d", nScreen), @"Number of screens", FMTStr(@"%d", nScreen))];
-
-    for (NSUInteger i = 0; i < nScreen; i++) {
-        NSString *resolution = RECT_STR([[screens objectAtIndex:i] frame]);
-        [a addObject:FMTEncodeForSparkle(FMTStr(@"screen_%d", i), resolution, FMTStr(@"Screen #%d resolution", i), resolution)];
-    }
-
-    return [NSArray arrayWithArray:a];
-}
-
 
 @end

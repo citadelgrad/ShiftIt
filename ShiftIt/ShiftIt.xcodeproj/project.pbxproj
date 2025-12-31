@@ -14,7 +14,6 @@
 		270DACA914098AE30080DFBD /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
 		2717BE39149935EC0012EF87 /* FMTNSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */; };
 		2717BE3B149935EC0012EF87 /* FMTNSError+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */; };
-		2717BEAC14994C120012EF87 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714C0B21487F9BC00CC951D /* SenTestingKit.framework */; };
 		2717BEAE14994C120012EF87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BEAD14994C120012EF87 /* Cocoa.framework */; };
 		2717BEBA14994C120012EF87 /* FMTGeometryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BEB914994C120012EF87 /* FMTGeometryTests.m */; };
 		2717BEBF14994CAE0012EF87 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
@@ -39,6 +38,9 @@
 		CA0A5412194C02ED00AC7F45 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA0A5410194C02ED00AC7F45 /* PreferencesWindow.xib */; };
 		CA0A5415194C030700AC7F45 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CA0A5413194C030700AC7F45 /* Localizable.strings */; };
 		D231C35F2F05C169009793DE /* ShortcutRecorderStubs.m in Sources */ = {isa = PBXBuildFile; fileRef = D231C35E2F05C169009793DE /* ShortcutRecorderStubs.m */; };
+		D231C3632F05CAD5009793DE /* ModernWindowDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D231C3622F05C97E009793DE /* ModernWindowDriverTests.swift */; };
+		D231C3652F05CBF9009793DE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D231C3642F05CBF9009793DE /* XCTest.framework */; };
+		D231C3662F05CC30009793DE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D231C3642F05CBF9009793DE /* XCTest.framework */; };
 		D2540B3A2F059FCE0099EECB /* ModernWindowDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2540B392F059FCE0099EECB /* ModernWindowDriver.swift */; };
 		D2540B3F2F05A02C0099EECB /* WindowManagerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2540B3E2F05A02C0099EECB /* WindowManagerExample.swift */; };
 		D2540B412F05A0520099EECB /* ModernWindowDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2540B402F05A0520099EECB /* ModernWindowDriverTests.swift */; };
@@ -80,7 +82,6 @@
 		270DACA714098AE30080DFBD /* GTMLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMLogger.h; path = GTM/GTMLogger.h; sourceTree = "<group>"; };
 		270DACA814098AE30080DFBD /* GTMLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMLogger.m; path = GTM/GTMLogger.m; sourceTree = "<group>"; };
 		270DACAA14098B250080DFBD /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = GTM/GTMDefines.h; sourceTree = "<group>"; };
-		2714C0B21487F9BC00CC951D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		2717BE28149933E70012EF87 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		2717BE2A149933EE0012EF87 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		2717BE34149935EB0012EF87 /* FMT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMT.h; path = FMT/FMT.h; sourceTree = "<group>"; };
@@ -149,6 +150,8 @@
 		D231C35C2F05B5D4009793DE /* FINAL_SENDABLE_FIXES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FINAL_SENDABLE_FIXES.md; sourceTree = "<group>"; };
 		D231C35E2F05C169009793DE /* ShortcutRecorderStubs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ShortcutRecorderStubs.m; path = ShiftIt.xcodeproj/ShortcutRecorderStubs.m; sourceTree = "<group>"; };
 		D231C3602F05C1D0009793DE /* ShortcutRecorderStubs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ShortcutRecorderStubs.m; path = ShiftIt.xcodeproj/ShortcutRecorderStubs.m; sourceTree = "<group>"; };
+		D231C3622F05C97E009793DE /* ModernWindowDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernWindowDriverTests.swift; sourceTree = "<group>"; };
+		D231C3642F05CBF9009793DE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		D2540B392F059FCE0099EECB /* ModernWindowDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernWindowDriver.swift; sourceTree = "<group>"; };
 		D2540B3B2F059FFD0099EECB /* MIGRATION_GUIDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MIGRATION_GUIDE.md; sourceTree = "<group>"; };
 		D2540B3D2F05A0070099EECB /* ShiftIt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShiftIt-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -186,7 +189,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2717BEAC14994C120012EF87 /* SenTestingKit.framework in Frameworks */,
+				D231C3652F05CBF9009793DE /* XCTest.framework in Frameworks */,
 				2717BEAE14994C120012EF87 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,6 +198,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D231C3662F05CC30009793DE /* XCTest.framework in Frameworks */,
 				279AF8191943675F0048FE5F /* ScriptingBridge.framework in Frameworks */,
 				F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
@@ -415,6 +419,7 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				D231C3482F05A7B4009793DE /* ModernSwiftExample.swift */,
+				D231C3622F05C97E009793DE /* ModernWindowDriverTests.swift */,
 			);
 			name = ShiftIt;
 			sourceTree = "<group>";
@@ -449,9 +454,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D231C3642F05CBF9009793DE /* XCTest.framework */,
 				279AF8181943675F0048FE5F /* ScriptingBridge.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
-				2714C0B21487F9BC00CC951D /* SenTestingKit.framework */,
 				2717BEAD14994C120012EF87 /* Cocoa.framework */,
 				27B4F46A192CFB2B00D35063 /* CoreFoundation.framework */,
 				27B4F479192CFB4600D35063 /* Foundation.framework */,
@@ -611,6 +616,7 @@
 				2717BEBF14994CAE0012EF87 /* FMTGeometry.m in Sources */,
 				F2DC61EF1127C862000E1A6F /* FMTNSFileManager+DirectoryLocations.m in Sources */,
 				E4BCFDF71237154D17E7FFBC /* FMTError.m in Sources */,
+				D231C3632F05CAD5009793DE /* ModernWindowDriverTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

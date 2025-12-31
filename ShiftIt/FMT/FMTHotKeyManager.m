@@ -23,6 +23,9 @@
 #import <ShortcutRecorder/SRCommon.h>
 #import <objc/message.h>
 
+// Typedef for objc_msgSend cast (avoids conflict with local 'id' variable)
+typedef void (*HotKeyMsgSendFunc)(id, SEL, id);
+
 #import "FMTHotKeyManager.h"
 #import "FMTDefines.h"
 #import "GTMLogger.h"
@@ -111,7 +114,7 @@ static inline OSStatus hotKeyHandler(EventHandlerCallRef inHandlerCallRef,EventR
 	TWHotKeyRegistartion* hotKeyReg = [allHotKeys objectForKey:id];
 	
 	if (hotKeyReg != nil) {
-		objc_msgSend([hotKeyReg provider], [hotKeyReg handler], [hotKeyReg userData]);
+		((HotKeyMsgSendFunc)objc_msgSend)([hotKeyReg provider], [hotKeyReg handler], [hotKeyReg userData]);
 		return noErr;
 	} else {
 		return eventNotHandledErr;

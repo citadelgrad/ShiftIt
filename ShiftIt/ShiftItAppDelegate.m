@@ -27,10 +27,7 @@
 #import "AXWindowDriver.h"
 #import "FMT/FMTNSFileManager+DirectoryLocations.h"
 
-#ifdef X11
-#import "X11WindowDriver.h"
-#endif
-
+// X11 support has been removed - use AXWindowDriver or ModernWindowDriver instead
 
 // the name of the plist file containing the preference defaults
 NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
@@ -436,23 +433,15 @@ NSDictionary *allShiftActions = nil;
         [drivers addObject:axDriver];
     }
 
-#ifdef X11
-    // initialize X11 driver
-    X11WindowDriver *x11Driver = [[[X11WindowDriver alloc] initWithError:&error] autorelease];
-    if (error) {
-        FMTLogInfo(@"Unable to load X11 driver: %@%@", [error localizedDescription], [error fullDescription]);
-    } else {
-        FMTLogInfo(@"Added driver: %@", [x11Driver description]);
-        [drivers addObject:x11Driver];
-    }
-
+    // X11 driver has been removed - it's no longer supported on modern macOS
+    // Use AXWindowDriver (above) or ModernWindowDriver for modern Swift code
+    
     if ([drivers count] == 0) {
         FMTLogError(@"No driver could be loaded - exiting");
         // TODO: externalize
         [NSApp presentError:SICreateError(100, @"No driver could be loaded")];
         [NSApp terminate:self];
     }
-#endif
 
     windowManager_ = [[SIWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
 
@@ -551,8 +540,17 @@ NSDictionary *allShiftActions = nil;
     [menuItem setAction:@selector(shiftItMenuAction_:)];
 
     if (keyCode != -1) {
-        NSString *keyCodeString = SRStringForKeyCode(keyCode);
-        if (!keyCodeString) {
+        // ShortcutRecorder removed - use simple key code to string conversion
+        NSString *keyCodeString = nil;
+        
+        // Basic key code to character mapping
+        // For full keyboard shortcut support, use KeyboardShortcutManager
+        if (keyCode >= 0 && keyCode <= 127) {
+            // Try to get a simple string representation
+            keyCodeString = [[NSString alloc] initWithFormat:@"%c", (char)keyCode];
+        }
+        
+        if (!keyCodeString || [keyCodeString length] == 0) {
             FMTLogInfo(@"Unable to get string representation for a key code: %ld", keyCode);
             keyCodeString = @"";
         }

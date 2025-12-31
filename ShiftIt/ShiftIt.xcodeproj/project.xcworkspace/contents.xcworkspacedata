@@ -2,6 +2,24 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:ShiftIt.xcodeproj">
+      location = "self:">
+   </FileRef>
+   <FileRef
+      location = "group:SimpleTests.swift">
+   </FileRef>
+   <FileRef
+      location = "group:FIX_XCTEST_ERROR.md">
+   </FileRef>
+   <FileRef
+      location = "group:QUICK_FIX_XCTEST.md">
+   </FileRef>
+   <FileRef
+      location = "group:XCTEST_FIXED.md">
+   </FileRef>
+   <FileRef
+      location = "group:ShortcutRecorderStubs.m">
+   </FileRef>
+   <FileRef
+      location = "group:ShortcutRecorderStubs.h">
    </FileRef>
 </Workspace>

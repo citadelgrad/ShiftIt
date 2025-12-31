@@ -19,7 +19,9 @@
 
 
 #import <Cocoa/Cocoa.h>
-#import <ShortcutRecorder/ShortcutRecorder.h>
+// ShortcutRecorder has been replaced with modern KeyboardShortcutManager
+// See WindowManagerExample.swift for the new implementation
+// #import <ShortcutRecorder/ShortcutRecorder.h>
 
 @interface PreferencesWindowController : NSWindowController {
  @private

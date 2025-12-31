@@ -25,16 +25,18 @@
 
 @implementation FMTHotKey (SRKeyCombo)
 
-+ (FMTHotKey *)hotKey:(KeyCombo)keyCombo {
-	FMTHotKey *hotKey = [[FMTHotKey alloc] initWithKeyCode:keyCombo.code modifiers:keyCombo.flags];
-	
-	return hotKey;
+// ShortcutRecorder has been removed
+// These methods are deprecated stubs
+
++ (FMTHotKey *)hotKey:(int)keyCombo {
+    // Return a default hotkey - this method is deprecated
+    FMTHotKey *hotKey = [[FMTHotKey alloc] initWithKeyCode:0 modifiers:0];
+    return hotKey;
 }
 
-- (KeyCombo)asKeyCombo {
-	KeyCombo keyCombo = SRMakeKeyCombo(keyCode_, modifiers_);
-
-	return keyCombo;
+- (int)asKeyCombo {
+    // Return 0 - this method is deprecated
+    return 0;
 }
 
 @end

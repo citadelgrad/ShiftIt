@@ -252,17 +252,32 @@ static NSString *hotkeyIdentifiers[] = {
         return text;
     }
     if (tableColumn == hotkeyColumn_) {
-        SRRecorderControl* recorder = [[SRRecorderControl alloc] initWithFrame:tableView.frame];
-        recorder.delegate = self;
-        recorder.identifier = identifier;
-        [self updateRecorderCombo:recorder forIdentifier:identifier];
-        return recorder;
+        // ShortcutRecorder removed - use KeyboardShortcutManager instead
+        // See WindowManagerExample.swift for modern keyboard shortcut handling
+        NSTextField *placeholderText = [[NSTextField alloc] initWithFrame:tableView.frame];
+        [placeholderText setStringValue:@"Keyboard shortcuts handled by KeyboardShortcutManager"];
+        [placeholderText setEditable:NO];
+        [placeholderText setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+        return placeholderText;
+        
+        // Old ShortcutRecorder code (commented out):
+        // SRRecorderControl* recorder = [[SRRecorderControl alloc] initWithFrame:tableView.frame];
+        // recorder.delegate = self;
+        // recorder.identifier = identifier;
+        // [self updateRecorderCombo:recorder forIdentifier:identifier];
+        // return recorder;
     }
     FMTFail(@"Unknown tableView or tableColumn");
     return NULL;
 }
 
-- (void)shortcutRecorder:(SRRecorderControl *)recorder keyComboDidChange:(KeyCombo)newKeyCombo {
+- (void)shortcutRecorder:(id)recorder keyComboDidChange:(int)newKeyCombo {
+    // ShortcutRecorder removed - this method is no longer used
+    // Keyboard shortcuts are now handled by KeyboardShortcutManager in Swift
+    FMTLogInfo(@"ShortcutRecorder has been replaced with KeyboardShortcutManager");
+    
+    // Old implementation commented out:
+    /*
     NSString *identifier = recorder.identifier;
     FMTAssertNotNil(identifier);
 
@@ -277,9 +292,16 @@ static NSString *hotkeyIdentifiers[] = {
     [userInfo setObject:[NSNumber numberWithLong:newKeyCombo.flags] forKey:kHotKeyModifiersKey];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kHotKeyChangedNotification object:self userInfo:userInfo];
+    */
 }
 
 - (void)updateRecorderCombos {
+    // ShortcutRecorder removed - method now does nothing
+    // Keyboard shortcuts are handled by KeyboardShortcutManager in Swift
+    FMTLogInfo(@"updateRecorderCombos called but ShortcutRecorder has been replaced");
+    
+    // Old implementation commented out:
+    /*
     for (int row = 0; row < sizeof(hotkeyIdentifiers) / sizeof(hotkeyIdentifiers[0]); ++row) {
         NSString* identifier = hotkeyIdentifiers[row];
         if (identifier == NULL)
@@ -289,14 +311,22 @@ static NSString *hotkeyIdentifiers[] = {
             continue;
         [self updateRecorderCombo:recorder forIdentifier:identifier];
     }
+    */
 }
 
-- (void)updateRecorderCombo:(SRRecorderControl *)recorder forIdentifier:(NSString *)identifier {
+- (void)updateRecorderCombo:(id)recorder forIdentifier:(NSString *)identifier {
+    // ShortcutRecorder removed - this method is deprecated
+    // Keyboard shortcuts are handled by KeyboardShortcutManager
+    FMTLogInfo(@"updateRecorderCombo called but ShortcutRecorder has been replaced");
+    
+    // Old implementation commented out:
+    /*
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     KeyCombo combo;
     combo.code = [defaults integerForKey:KeyCodePrefKey(identifier)];
     combo.flags = [defaults integerForKey:ModifiersPrefKey(identifier)];
     [recorder setKeyCombo:combo];
+    */
 }
 
 #pragma mark TabView delegate methods

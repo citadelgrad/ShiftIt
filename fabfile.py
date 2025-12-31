@@ -8,9 +8,9 @@ try:
     import sh
 
     gpg = sh.Command('gpg')
-except ImportError as exc:
+except (ImportError, Exception) as exc:
     def gpg(*args, **kwargs):
-        raise NotImplementedError('the sh module is not installed; unable to use gpg-encrypted keys')
+        raise NotImplementedError('the sh module is not installed or gpg command not found; unable to use gpg-encrypted keys')
 
 
 class DecryptedFiles(object):
@@ -106,9 +106,47 @@ appcast_template = '''
 </rss>
 '''.strip()
 
-from fabric.api import local, execute, abort, task, lcd, puts, settings
-from fabric.contrib.console import confirm
-from fabric.colors import green
+from invoke import task, run
+from invoke.context import Context
+
+# Compatibility layer for Fabric 1.x to 3.x migration
+def local(cmd, capture=False):
+    result = run(cmd, hide=capture, warn=True)
+    if capture:
+        return result.stdout
+    return result
+
+def puts(msg):
+    print(msg)
+
+def green(msg):
+    return f"\033[92m{msg}\033[0m"
+
+class lcd:
+    def __init__(self, path):
+        import os
+        self.path = path
+        self.old_path = None
+    def __enter__(self):
+        import os
+        self.old_path = os.getcwd()
+        os.chdir(self.path)
+    def __exit__(self, *args):
+        import os
+        os.chdir(self.old_path)
+
+class settings:
+    def __init__(self, warn_only=False):
+        self.warn_only = warn_only
+    def __enter__(self):
+        pass
+    def __exit__(self, *args):
+        pass
+
+def execute(func):
+    ctx = Context()
+    return func(ctx)
+
 from xml.etree import ElementTree
 
 import pystache
@@ -198,17 +236,17 @@ shiftit = github.repository(SHIFTIT_GITHUB_USER, SHIFTIT_GITHUB_REPO)
 ################################################################################
 
 @task
-def info():
+def info(ctx):
     '''
     Output all the build properties
     '''
 
-    print 'Build info:'
+    print('Build info:')
     for (k,v) in [(k,v) for (k,v) in globals().items() if k.startswith('proj_')]:
-        print "\t%s: %s" % (k[len('proj_'):],v)
+        print("\t%s: %s" % (k[len('proj_'):],v))
 
 @task
-def build():
+def build(ctx):
     '''
     Makes a build by executing xcodebuild
     '''
@@ -217,7 +255,7 @@ def build():
         local('xcodebuild -target %s -configuration Release' % proj_name)
 
 @task
-def archive():
+def archive(ctx):
     '''
     Archives build
     '''
@@ -226,13 +264,13 @@ def archive():
     local('ditto -ck --keepParent %s %s' % (proj_app_dir, proj_archive_path))
 
 @task
-def release_notes():
+def release_notes(ctx):
     with open(proj_release_notes_html_file,"w") as f:
         f.write(_gen_release_notes(release_notes_template_html))
         puts('Written '+proj_release_notes_html_file)
 
 @task
-def appcast():
+def appcast(ctx):
     '''
     Prepare the release: sign the build, generate appcast, generate release notes, commit and push.
     '''
@@ -243,7 +281,7 @@ def appcast():
     tree = ElementTree.parse(proj_info_plist)
     root = tree.getroot().find('dict')
     elem = list(root.findall('*'))
-    appcast_url = _find(lambda (k,v): k.text == 'SUFeedURL', zip(*[iter(elem)]*2))[1].text.strip()
+    appcast_url = _find(lambda kv: kv[0].text == 'SUFeedURL', zip(*[iter(elem)]*2))[1].text.strip()
 
     # dependencies
     execute(archive)
@@ -277,7 +315,7 @@ def appcast():
         f.write(pystache.render(appcast_template, appcast))
 
 @task
-def release():
+def release(ctx):
     '''
     Prepares the release to github
     '''
@@ -291,7 +329,7 @@ def release():
     if len(open_issues) > 0:
         puts('Warning: there are still open issues')
         for i in open_issues:
-            print '\t * #%s: %s' % (i.number, i.title)
+            print('\t * #%s: %s' % (i.number, i.title))
 
 
     execute(appcast)

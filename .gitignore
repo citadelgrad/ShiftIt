@@ -2,3 +2,4 @@ ShiftIt-*.zip
 misc
 fabfile.pyc
 ._build
+__pycache__

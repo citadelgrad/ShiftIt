@@ -48,7 +48,6 @@
 		D26522122F08463700D1BEF8 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D265220F2F0845EF00D1BEF8 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D26522142F0848A300D1BEF8 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D265220F2F0845EF00D1BEF8 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D26522172F0849D300D1BEF8 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = D26522162F0849D300D1BEF8 /* Sparkle */; };
-		D26522192F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md in Resources */ = {isa = PBXBuildFile; fileRef = D26522182F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md */; };
 		E4BCF1FFDFE5D8200B19C785 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		E4BCFDF71237154D17E7FFBC /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PreferencesWindowController.m */; };
@@ -176,7 +175,6 @@
 		D2540B3E2F05A02C0099EECB /* WindowManagerExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManagerExample.swift; sourceTree = "<group>"; };
 		D2540B402F05A0520099EECB /* ModernWindowDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernWindowDriverTests.swift; sourceTree = "<group>"; };
 		D265220F2F0845EF00D1BEF8 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
-		D26522182F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md; sourceTree = "<group>"; };
 		E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAdjacentRectanglesTest.m; sourceTree = "<group>"; };
 		E4BCF1236CA369B89F718229 /* ShiftIt Tests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ShiftIt Tests-Prefix.pch"; sourceTree = "<group>"; };
 		E4BCF6EB42F45803C08BAC36 /* FMTError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTError.m; sourceTree = "<group>"; };
@@ -443,7 +441,6 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				D231C3482F05A7B4009793DE /* ModernSwiftExample.swift */,
 				D231C3622F05C97E009793DE /* ModernWindowDriverTests.swift */,
-				D26522182F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md */,
 			);
 			name = ShiftIt;
 			sourceTree = "<group>";
@@ -614,7 +611,6 @@
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */,
 				27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
-				D26522192F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md in Resources */,
 				271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

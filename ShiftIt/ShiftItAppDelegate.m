@@ -385,24 +385,50 @@ NSDictionary *allShiftActions = nil;
             
             if (response == NSAlertFirstButtonReturn) {
                 FMTLogInfo(@"User chose to relaunch");
-                
-                // Get the app path
-                NSString *appPath = [[NSBundle mainBundle] bundlePath];
-                
-                // Use open command to relaunch
-                NSTask *task = [[NSTask alloc] init];
-                [task setLaunchPath:@"/usr/bin/open"];
-                [task setArguments:@[appPath]];
-                [task launch];
-                [task release];
-                
-                // Quit this instance
-                [NSApp terminate:nil];
+                [self relaunchApplication];
             } else {
                 FMTLogInfo(@"User chose to relaunch later");
             }
         });
     }
+}
+
+- (void)relaunchApplication {
+    // Get the app path
+    NSString *appPath = [[NSBundle mainBundle] bundlePath];
+    NSString *relaunchPath = [NSString stringWithFormat:@"%@/Contents/MacOS/%@",
+                              appPath,
+                              [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleExecutable"]];
+    
+    FMTLogInfo(@"Relaunching app from: %@", appPath);
+    
+    // Create a script that waits for this process to quit, then launches the app
+    // Use the process ID to wait for this specific instance to quit
+    int pid = [[NSProcessInfo processInfo] processIdentifier];
+    NSString *script = [NSString stringWithFormat:
+        @"(while /bin/ps -p %d > /dev/null; do /bin/sleep 0.1; done; /usr/bin/open -n '%@') &",
+        pid, appPath];
+    
+    // Launch the script using /bin/sh
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/bin/sh"];
+    [task setArguments:@[@"-c", script]];
+    
+    // Important: Don't wait for the task, let it run in background
+    @try {
+        [task launch];
+        FMTLogInfo(@"Relaunch script started successfully");
+    } @catch (NSException *exception) {
+        FMTLogError(@"Failed to launch relaunch script: %@", exception);
+    }
+    [task release];
+    
+    // Give the script a moment to start, then quit
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), 
+                   dispatch_get_main_queue(), ^{
+        FMTLogInfo(@"Terminating current instance");
+        [NSApp terminate:nil];
+    });
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {

@@ -40,10 +40,15 @@
 		D231C35F2F05C169009793DE /* ShortcutRecorderStubs.m in Sources */ = {isa = PBXBuildFile; fileRef = D231C35E2F05C169009793DE /* ShortcutRecorderStubs.m */; };
 		D231C3632F05CAD5009793DE /* ModernWindowDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D231C3622F05C97E009793DE /* ModernWindowDriverTests.swift */; };
 		D231C3652F05CBF9009793DE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D231C3642F05CBF9009793DE /* XCTest.framework */; };
-		D231C3662F05CC30009793DE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D231C3642F05CBF9009793DE /* XCTest.framework */; };
+		D231C3692F05D6D5009793DE /* Sparkle.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D231C3672F05D6D5009793DE /* Sparkle.xcframework */; };
 		D2540B3A2F059FCE0099EECB /* ModernWindowDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2540B392F059FCE0099EECB /* ModernWindowDriver.swift */; };
 		D2540B3F2F05A02C0099EECB /* WindowManagerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2540B3E2F05A02C0099EECB /* WindowManagerExample.swift */; };
 		D2540B412F05A0520099EECB /* ModernWindowDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2540B402F05A0520099EECB /* ModernWindowDriverTests.swift */; };
+		D26522112F08463700D1BEF8 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D265220F2F0845EF00D1BEF8 /* Sparkle.framework */; };
+		D26522122F08463700D1BEF8 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D265220F2F0845EF00D1BEF8 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D26522142F0848A300D1BEF8 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D265220F2F0845EF00D1BEF8 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D26522172F0849D300D1BEF8 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = D26522162F0849D300D1BEF8 /* Sparkle */; };
+		D26522192F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md in Resources */ = {isa = PBXBuildFile; fileRef = D26522182F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md */; };
 		E4BCF1FFDFE5D8200B19C785 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		E4BCFDF71237154D17E7FFBC /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PreferencesWindowController.m */; };
@@ -59,12 +64,24 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		271CB7E7192C093800D633E6 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				D26522142F0848A300D1BEF8 /* Sparkle.framework in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		D26522132F08463700D1BEF8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D26522122F08463700D1BEF8 /* Sparkle.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -152,11 +169,14 @@
 		D231C3602F05C1D0009793DE /* ShortcutRecorderStubs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ShortcutRecorderStubs.m; path = ShiftIt.xcodeproj/ShortcutRecorderStubs.m; sourceTree = "<group>"; };
 		D231C3622F05C97E009793DE /* ModernWindowDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernWindowDriverTests.swift; sourceTree = "<group>"; };
 		D231C3642F05CBF9009793DE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		D231C3672F05D6D5009793DE /* Sparkle.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Sparkle.xcframework; sourceTree = "<group>"; };
 		D2540B392F059FCE0099EECB /* ModernWindowDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernWindowDriver.swift; sourceTree = "<group>"; };
 		D2540B3B2F059FFD0099EECB /* MIGRATION_GUIDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MIGRATION_GUIDE.md; sourceTree = "<group>"; };
 		D2540B3D2F05A0070099EECB /* ShiftIt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShiftIt-Bridging-Header.h"; sourceTree = "<group>"; };
 		D2540B3E2F05A02C0099EECB /* WindowManagerExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManagerExample.swift; sourceTree = "<group>"; };
 		D2540B402F05A0520099EECB /* ModernWindowDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernWindowDriverTests.swift; sourceTree = "<group>"; };
+		D265220F2F0845EF00D1BEF8 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		D26522182F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md; sourceTree = "<group>"; };
 		E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAdjacentRectanglesTest.m; sourceTree = "<group>"; };
 		E4BCF1236CA369B89F718229 /* ShiftIt Tests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ShiftIt Tests-Prefix.pch"; sourceTree = "<group>"; };
 		E4BCF6EB42F45803C08BAC36 /* FMTError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTError.m; sourceTree = "<group>"; };
@@ -190,6 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D231C3652F05CBF9009793DE /* XCTest.framework in Frameworks */,
+				D231C3692F05D6D5009793DE /* Sparkle.xcframework in Frameworks */,
 				2717BEAE14994C120012EF87 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -198,10 +219,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D231C3662F05CC30009793DE /* XCTest.framework in Frameworks */,
+				D26522172F0849D300D1BEF8 /* Sparkle in Frameworks */,
 				279AF8191943675F0048FE5F /* ScriptingBridge.framework in Frameworks */,
 				F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				D26522112F08463700D1BEF8 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +433,7 @@
 		29B97314FDCFA39411CA2CEA /* ShiftIt */ = {
 			isa = PBXGroup;
 			children = (
+				D265220F2F0845EF00D1BEF8 /* Sparkle.framework */,
 				D231C35E2F05C169009793DE /* ShortcutRecorderStubs.m */,
 				D231C3602F05C1D0009793DE /* ShortcutRecorderStubs.m */,
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -420,6 +443,7 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				D231C3482F05A7B4009793DE /* ModernSwiftExample.swift */,
 				D231C3622F05C97E009793DE /* ModernWindowDriverTests.swift */,
+				D26522182F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md */,
 			);
 			name = ShiftIt;
 			sourceTree = "<group>";
@@ -462,6 +486,7 @@
 				27B4F479192CFB4600D35063 /* Foundation.framework */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 				E4BCF4F74271515B995C0CF6 /* ShiftIt Tests */,
+				D231C3672F05D6D5009793DE /* Sparkle.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -522,6 +547,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				271CB7E7192C093800D633E6 /* CopyFiles */,
+				D26522132F08463700D1BEF8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -555,6 +581,9 @@
 				de,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* ShiftIt */;
+			packageReferences = (
+				D26522152F0849D300D1BEF8 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -585,6 +614,7 @@
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */,
 				27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
+				D26522192F084BE200D1BEF8 /* ACCESSIBILITY_PERMISSION_IMPROVEMENTS.md in Resources */,
 				271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,7 +744,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "FMT Tests/FMT Tests-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.fikovnik.projects.FMT.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -736,7 +766,7 @@
 				GCC_PREFIX_HEADER = "FMT Tests/FMT Tests-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "FMT Tests/FMT Tests-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.fikovnik.projects.FMT.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -750,29 +780,19 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				FRAMEWORK_SEARCH_PATHS = .;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "_DEBUGPRINTS_=1";
-				HEADER_SEARCH_PATHS = (
-					/opt/local/include,
-					/opt/X11/include,
-					/usr/X11/include,
-				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					/opt/local/lib,
-					/opt/X11/lib,
-					/usr/X11/lib,
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				OTHER_CFLAGS = (
-					"-DDEBUG",
-					"-DX11",
-				);
+				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.shiftitapp.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = ShiftIt;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = .;
 			};
 			name = Debug;
 		};
@@ -783,27 +803,17 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				FRAMEWORK_SEARCH_PATHS = .;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
-				HEADER_SEARCH_PATHS = (
-					/opt/local/include,
-					/opt/X11/include,
-					/usr/X11/include,
-				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					/opt/local/lib,
-					/opt/X11/lib,
-					/usr/X11/lib,
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-					"-DX11",
-				);
+				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.shiftitapp.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = ShiftIt;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = .;
 			};
 			name = Release;
 		};
@@ -946,6 +956,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D26522152F0849D300D1BEF8 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D26522162F0849D300D1BEF8 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D26522152F0849D300D1BEF8 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }

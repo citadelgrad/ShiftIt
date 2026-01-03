@@ -26,11 +26,11 @@
 
 - (NSDateComponents *) dateComponents {
     NSCalendar *cal = [NSCalendar currentCalendar];
-    return [cal components:(NSYearCalendarUnit 
-                            | NSMonthCalendarUnit 
-                            |  NSDayCalendarUnit 
-                            | NSHourCalendarUnit 
-                            | NSMinuteCalendarUnit) fromDate:self];
+    return [cal components:(NSCalendarUnitYear 
+                            | NSCalendarUnitMonth 
+                            | NSCalendarUnitDay 
+                            | NSCalendarUnitHour 
+                            | NSCalendarUnitMinute) fromDate:self];
 }
 
 - (NSString *) stringWithFormat:(NSString *)format {

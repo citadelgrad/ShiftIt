@@ -184,10 +184,10 @@ SINGLETON_BOILERPLATE(FMTHotKeyManager, sharedHotKeyManager);
 	// TODO: extract
 	hotKeyID.signature = 'TFMT';
 	// TODO: make sure it is thread safe
-	hotKeyID.id = hotKeyIdSequence_++;
+	hotKeyID.id = (UInt32)hotKeyIdSequence_++;
 	
 	EventHotKeyRef hotKeyRef;
-	RegisterEventHotKey([hotKey keyCode], [hotKey carbonModifiers], hotKeyID,
+	RegisterEventHotKey((UInt32)[hotKey keyCode], (UInt32)[hotKey carbonModifiers], hotKeyID,
 						GetApplicationEventTarget(), 0, &hotKeyRef);
 	
 	if (!hotKeyRef) {

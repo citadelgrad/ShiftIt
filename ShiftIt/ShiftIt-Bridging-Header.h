@@ -27,4 +27,7 @@
 #import "FMT.h"
 #endif
 
+// Sparkle (auto-update framework)
+#import <Sparkle/Sparkle.h>
+
 #endif /* ShiftIt_Bridging_Header_h */

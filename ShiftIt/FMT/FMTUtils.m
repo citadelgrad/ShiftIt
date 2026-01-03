@@ -82,19 +82,13 @@ BOOL FMTOpenSystemPreferencePane(NSString *prefPaneId) {
 NSInteger FMTNumberOfRunningProcessesWithBundleId(NSString *bundleId) {
 	FMTAssertNotNil(bundleId);
 	
+	// Use NSRunningApplication for modern macOS
+	NSArray *runningApps = [[NSWorkspace sharedWorkspace] runningApplications];
 	NSInteger n = 0;
-	ProcessSerialNumber PSN = { kNoProcess, kNoProcess };
 	
-	while (GetNextProcess(&PSN) == noErr) {
-		NSDictionary *infoDict = (NSDictionary *)ProcessInformationCopyDictionary(&PSN, kProcessDictionaryIncludeAllInformationMask);
-		if(infoDict) {
-			NSString *processBundleID = [infoDict objectForKey:(NSString *)kCFBundleIdentifierKey];
-			if (processBundleID && [processBundleID isEqualToString:bundleId]) {
-				n++;
-			}
-			
-			CFMakeCollectable(infoDict);
-			[infoDict release];
+	for (NSRunningApplication *app in runningApps) {
+		if ([[app bundleIdentifier] isEqualToString:bundleId]) {
+			n++;
 		}
 	}
 	

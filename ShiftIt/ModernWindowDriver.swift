@@ -53,15 +53,61 @@ import ScreenCaptureKit
     }
     
     /// Check if accessibility permissions are granted
+    /// This is the most reliable method as of macOS 14+
     @objc static func checkAccessibilityPermissions() -> Bool {
-        return AXIsProcessTrusted()
+        // Primary check using AXIsProcessTrusted()
+        // This is the canonical way to check accessibility permissions
+        let isTrusted = AXIsProcessTrusted()
+        
+        // Secondary verification: Actually test if we can use the API
+        // This catches edge cases where the system reports trusted but API doesn't work
+        // (e.g., during permission transitions, system bugs, or security policy conflicts)
+        if isTrusted {
+            let systemElement = AXUIElementCreateSystemWide()
+            var roleRef: CFTypeRef?
+            let error = AXUIElementCopyAttributeValue(
+                systemElement,
+                kAXRoleAttribute as CFString,
+                &roleRef
+            )
+            
+            // Double-check: even if we got a role, verify it's not empty
+            if error == .success, let role = roleRef as? String, !role.isEmpty {
+                return true
+            }
+            
+            // If verification failed, permissions might be in transition state
+            // Return false to be safe
+            return false
+        }
+        
+        return false
+    }
+    
+    /// Asynchronous permission check (recommended for UI updates)
+    /// Performs the check off the main thread to avoid blocking
+    @MainActor
+    static func checkAccessibilityPermissionsAsync() async -> Bool {
+        await Task.detached(priority: .userInitiated) {
+            checkAccessibilityPermissions()
+        }.value
     }
     
     /// Request accessibility permissions
+    /// Opens System Settings to the appropriate pane
     @objc static func requestAccessibilityPermissions() {
-        // Use string literal directly to avoid concurrency warnings
-        let options = ["AXTrustedCheckOptionPrompt": true] as CFDictionary
-        AXIsProcessTrustedWithOptions(options)
+        // Modern approach: Use URL to open System Settings directly to Privacy & Security
+        if #available(macOS 13.0, *) {
+            // macOS 13+ uses x-apple.systempreferences URL scheme with new settings IDs
+            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
+                NSWorkspace.shared.open(url)
+            }
+        } else {
+            // Fallback for macOS 12 and earlier
+            // Use string literal directly to avoid concurrency warnings with kAXTrustedCheckOptionPrompt
+            let options = ["AXTrustedCheckOptionPrompt": true] as CFDictionary
+            AXIsProcessTrustedWithOptions(options)
+        }
     }
     
     /// Get the focused window from the frontmost application

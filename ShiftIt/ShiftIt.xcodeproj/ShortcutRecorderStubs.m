@@ -6,8 +6,7 @@
  that have been removed from the project.
 */
 
-#import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
+#import "ShortcutRecorderStubs.h"
 #import <Carbon/Carbon.h>
 
 // Make sure these are visible to the linker

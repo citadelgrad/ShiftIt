@@ -177,10 +177,10 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     // TODO: IOC!
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    (margins->left) = [defaults integerForKey:kLeftMarginPrefKey];
-    (margins->top) = [defaults integerForKey:kTopMarginPrefKey];
-    (margins->bottom) = [defaults integerForKey:kBottomMarginPrefKey];
-    (margins->right) = [defaults integerForKey:kRightMarginPrefKey];
+    (margins->left) = (int)[defaults integerForKey:kLeftMarginPrefKey];
+    (margins->top) = (int)[defaults integerForKey:kTopMarginPrefKey];
+    (margins->bottom) = (int)[defaults integerForKey:kBottomMarginPrefKey];
+    (margins->right) = (int)[defaults integerForKey:kRightMarginPrefKey];
 }
 
 - (BOOL)anchorWindow:(id <SIWindow>)window to:(int)anchor error:(NSError **)error {

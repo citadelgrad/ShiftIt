@@ -31,11 +31,14 @@ final class ModernWindowManager: ObservableObject {
     @Published private(set) var hasAccessibilityPermissions = false
     @Published private(set) var isProcessing = false
     @Published private(set) var lastError: WindowError?
+    @Published private(set) var isCheckingPermissions = false
     
     // MARK: - Private Properties
     
     private let driver: ModernWindowDriver
     private var permissionMonitor: Task<Void, Never>?
+    private var appActivationObserver: NSObjectProtocol?
+    private var accessibilityChangeObserver: NSObjectProtocol?
     
     // MARK: - Custom Errors
     
@@ -70,26 +73,57 @@ final class ModernWindowManager: ObservableObject {
         // Start monitoring permissions
         startPermissionMonitoring()
         
+        // Monitor app activation to recheck permissions when returning from Settings
+        setupAppActivationObserver()
+        
         Logger.windowManager.info("ModernWindowManager initialized")
     }
     
     deinit {
         permissionMonitor?.cancel()
+        if let observer = appActivationObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+        if let observer = accessibilityChangeObserver {
+            DistributedNotificationCenter.default().removeObserver(observer)
+        }
     }
     
     // MARK: - Permission Management
     
     func checkPermissions() {
-        hasAccessibilityPermissions = ModernWindowDriver.checkAccessibilityPermissions()
-        Logger.windowManager.debug("Permissions check: \(self.hasAccessibilityPermissions)")
+        // Use Task to perform async check without blocking
+        Task { @MainActor in
+            isCheckingPermissions = true
+            
+            // Use the async version to avoid blocking the main thread
+            let isGranted = await ModernWindowDriver.checkAccessibilityPermissionsAsync()
+            
+            // Update state with proper change detection
+            if hasAccessibilityPermissions != isGranted {
+                hasAccessibilityPermissions = isGranted
+                Logger.windowManager.info("Permissions status changed to: \(isGranted)")
+            } else {
+                hasAccessibilityPermissions = isGranted
+                Logger.windowManager.debug("Permissions status rechecked: \(isGranted)")
+            }
+            
+            isCheckingPermissions = false
+        }
     }
     
     func requestPermissions() {
+        Logger.windowManager.info("Requesting accessibility permissions")
         ModernWindowDriver.requestAccessibilityPermissions()
         
-        // Check again after a short delay
-        Task {
+        // Check again after delays to capture permission changes
+        Task { @MainActor in
+            // First check after UI might have appeared
             try? await Task.sleep(for: .seconds(1))
+            checkPermissions()
+            
+            // Second check after user might have granted permission
+            try? await Task.sleep(for: .seconds(3))
             checkPermissions()
         }
     }
@@ -99,6 +133,34 @@ final class ModernWindowManager: ObservableObject {
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(5))
                 await self?.checkPermissions()
+            }
+        }
+    }
+    
+    private func setupAppActivationObserver() {
+        // Recheck permissions when app becomes active
+        // This catches the case where user granted permissions in System Settings
+        appActivationObserver = NotificationCenter.default.addObserver(
+            forName: NSApplication.didBecomeActiveNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Logger.windowManager.debug("App became active, rechecking permissions")
+            self?.checkPermissions()
+        }
+        
+        // Listen for system-wide accessibility preference changes
+        // This is the most immediate way to detect permission changes
+        accessibilityChangeObserver = DistributedNotificationCenter.default().addObserver(
+            forName: NSNotification.Name("com.apple.accessibility.api"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Logger.windowManager.info("Accessibility settings changed, rechecking permissions")
+            // Add small delay to ensure system has processed the change
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(500))
+                self?.checkPermissions()
             }
         }
     }
@@ -235,17 +297,32 @@ struct WindowControlView: View {
     private var statusSection: some View {
         VStack(spacing: 10) {
             HStack {
-                Image(systemName: windowManager.hasAccessibilityPermissions ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .foregroundStyle(windowManager.hasAccessibilityPermissions ? .green : .red)
+                if windowManager.isCheckingPermissions {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                } else {
+                    Image(systemName: windowManager.hasAccessibilityPermissions ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        .foregroundStyle(windowManager.hasAccessibilityPermissions ? .green : .red)
+                }
                 
                 Text("Accessibility Permissions")
                     .font(.headline)
                 
                 Spacer()
+                
+                // Add a recheck button that always shows
+                Button {
+                    windowManager.checkPermissions()
+                } label: {
+                    Label("Recheck", systemImage: "arrow.clockwise")
+                }
+                .buttonStyle(.borderless)
+                .help("Check permission status again")
+                .disabled(windowManager.isCheckingPermissions)
             }
             
             if !windowManager.hasAccessibilityPermissions {
-                Button("Grant Permissions") {
+                Button("Open System Settings") {
                     windowManager.requestPermissions()
                 }
                 .buttonStyle(.borderedProminent)

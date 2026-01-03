@@ -109,34 +109,42 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 }
 
 -(IBAction)reportIssue:(id)sender {
-    NSInteger ret = NSRunAlertPanel(NSLocalizedString(@"Before you report new issue", nil),
-            NSLocalizedString(@"Please make sure that you look at the other issues before you submit a new one.", nil),
-            NSLocalizedString(@"Take me to github.com", nil), NULL, NULL);
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:NSLocalizedString(@"Before you report new issue", nil)];
+    [alert setInformativeText:NSLocalizedString(@"Please make sure that you look at the other issues before you submit a new one.", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Take me to github.com", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
     
-    if (ret == NSAlertDefaultReturn) {
+    if ([alert runModal] == NSAlertFirstButtonReturn) {
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kShiftItGithubIssueURL]];
     }
+    
+    [alert release];
 }
 
 - (IBAction)revealLogFileInFinder:(id)sender {
     if (debugLoggingFile_) {
         NSURL *fileURL = [NSURL fileURLWithPath:debugLoggingFile_];
-        [[NSWorkspace sharedWorkspace] selectFile:[fileURL path] inFileViewerRootedAtPath:nil];
+        // Use modern API or pass empty string instead of nil
+        if (@available(macOS 10.15, *)) {
+            [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[fileURL]];
+        } else {
+            [[NSWorkspace sharedWorkspace] selectFile:[fileURL path] inFileViewerRootedAtPath:@""];
+        }
     }
 }
 
 - (IBAction)showMenuBarIconAction:(id)sender {
     if (![showMenuIcon state]) {
-        NSAlert *alert = [NSAlert
-                alertWithMessageText:@"Disabling menu icon"
-                       defaultButton:nil
-                     alternateButton:nil
-                         otherButton:nil
-           informativeTextWithFormat:@"You chose to disable the menu icon. This means that you won't be able to easily open the Preferences window in the future.\n"
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Disabling menu icon"];
+        [alert setInformativeText:@"You chose to disable the menu icon. This means that you won't be able to easily open the Preferences window in the future.\n"
                    "\n"
                    "To open the Preferences window, while the menu icon is hidden, just relaunch the application."];
+        [alert addButtonWithTitle:@"OK"];
         
         [alert runModal];
+        [alert release];
     }
 }
 
@@ -244,7 +252,7 @@ static NSString *hotkeyIdentifiers[] = {
     FMTAssertNotNil(action);
     if (tableColumn == hotkeyLabelColumn_) {
         NSTextField* text = [[NSTextField alloc] initWithFrame:tableView.frame];
-        text.alignment = NSRightTextAlignment;
+        text.alignment = NSTextAlignmentRight;
         text.drawsBackground = NO;
         text.stringValue = action.label;
         [text setBordered:NO];

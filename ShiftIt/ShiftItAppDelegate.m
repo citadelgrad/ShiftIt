@@ -27,6 +27,12 @@
 #import "FMT/FMTNSFileManager+DirectoryLocations.h"
 #import <ApplicationServices/ApplicationServices.h>
 
+// Import Sparkle if it's being used
+#if __has_include(<Sparkle/Sparkle.h>)
+#import <Sparkle/SPUStandardUpdaterController.h>
+#import <Sparkle/SPUUpdater.h>
+#endif
+
 // the name of the plist file containing the preference defaults
 NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
 
@@ -254,6 +260,11 @@ NSDictionary *allShiftActions = nil;
     // Track if we've shown the permission prompt
     BOOL hasShownPermissionPrompt_;
     NSTimer *permissionCheckTimer_;
+    
+#if __has_include(<Sparkle/Sparkle.h>)
+    // Sparkle updater controller
+    SPUStandardUpdaterController *updaterController_;
+#endif
 }
 
 + (void)initialize {
@@ -287,6 +298,10 @@ NSDictionary *allShiftActions = nil;
     [usageStatistics_ release];
     [hotKeyManager_ release];
     
+#if __has_include(<Sparkle/Sparkle.h>)
+    [updaterController_ release];
+#endif
+    
     if (permissionCheckTimer_) {
         [permissionCheckTimer_ invalidate];
         permissionCheckTimer_ = nil;
@@ -319,6 +334,45 @@ NSDictionary *allShiftActions = nil;
             [loginItems toggleApplicationInLoginItemsWithPath:appPath enabled:YES];
         }
     }
+}
+
+- (void)setupSparkleUpdater_ {
+#if __has_include(<Sparkle/Sparkle.h>)
+    FMTLogInfo(@"Setting up Sparkle updater with gentle reminders");
+    
+    // Create the updater controller programmatically
+    // This gives us full control over the configuration
+    updaterController_ = [[SPUStandardUpdaterController alloc] 
+                          initWithStartingUpdater:YES 
+                          updaterDelegate:nil 
+                          userDriverDelegate:nil];
+    
+    if (updaterController_) {
+        SPUUpdater *updater = updaterController_.updater;
+        
+        // Enable automatic checks (this is typically set in Info.plist)
+        // updater.automaticallyChecksForUpdates = YES;
+        
+        // The gentle reminder is typically configured via Info.plist with:
+        // SUScheduledCheckInterval - time between checks (in seconds)
+        // 
+        // However, Sparkle 2.x automatically implements gentle reminders when:
+        // 1. Automatic checks are enabled (SUEnableAutomaticChecks = YES in Info.plist)
+        // 2. A check interval is set (SUScheduledCheckInterval in Info.plist)
+        //
+        // The framework will automatically show reminders for pending updates
+        // according to the documentation at:
+        // https://sparkle-project.org/documentation/gentle-reminders
+        
+        FMTLogInfo(@"Sparkle updater configured - automatic checks: %d, can check: %d", 
+                  updater.automaticallyChecksForUpdates, 
+                  updater.canCheckForUpdates);
+    } else {
+        FMTLogError(@"Failed to create Sparkle updater controller");
+    }
+#else
+    FMTLogInfo(@"Sparkle framework not available - skipping updater setup");
+#endif
 }
 
 - (void)checkAuthorization {
@@ -432,6 +486,9 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    // Initialize Sparkle updater with gentle reminders enabled
+    [self setupSparkleUpdater_];
+    
     // Initialize actions first
     [self initializeActions_];
     

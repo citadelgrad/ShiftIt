@@ -5,21 +5,21 @@
       location = "self:">
    </FileRef>
    <FileRef
-      location = "group:SimpleTests.swift">
+      location = "group:KeyboardShortcutRecorder.swift">
    </FileRef>
    <FileRef
-      location = "group:FIX_XCTEST_ERROR.md">
+      location = "group:ShiftIt-Bridging-Header.h">
    </FileRef>
    <FileRef
-      location = "group:QUICK_FIX_XCTEST.md">
+      location = "group:KEYBOARD_SHORTCUT_INTEGRATION.md">
    </FileRef>
    <FileRef
-      location = "group:XCTEST_FIXED.md">
+      location = "group:XCODE_BUILD_SETTINGS.md">
    </FileRef>
    <FileRef
-      location = "group:ShortcutRecorderStubs.m">
+      location = "group:README_BUILD_FIX.md">
    </FileRef>
    <FileRef
-      location = "group:ShortcutRecorderStubs.h">
+      location = "group:VISUAL_CHECKLIST.md">
    </FileRef>
 </Workspace>

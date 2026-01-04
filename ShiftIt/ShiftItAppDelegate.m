@@ -31,6 +31,9 @@
 #if __has_include(<Sparkle/Sparkle.h>)
 #import <Sparkle/SPUStandardUpdaterController.h>
 #import <Sparkle/SPUUpdater.h>
+#import <Sparkle/SPUStandardUserDriverDelegate.h>
+#import <Sparkle/SPUUserUpdateState.h>
+#import <Sparkle/SUAppcastItem.h>
 #endif
 
 // the name of the plist file containing the preference defaults
@@ -225,6 +228,9 @@ NSDictionary *allShiftActions = nil;
 @end
 
 @interface ShiftItAppDelegate ()
+#if __has_include(<Sparkle/Sparkle.h>)
+<SPUStandardUserDriverDelegate>
+#endif
 
 - (void)checkAuthorization;
 
@@ -339,33 +345,19 @@ NSDictionary *allShiftActions = nil;
 - (void)setupSparkleUpdater_ {
 #if __has_include(<Sparkle/Sparkle.h>)
     FMTLogInfo(@"Setting up Sparkle updater with gentle reminders");
-    
+
     // Create the updater controller programmatically
-    // This gives us full control over the configuration
-    updaterController_ = [[SPUStandardUpdaterController alloc] 
-                          initWithStartingUpdater:YES 
-                          updaterDelegate:nil 
-                          userDriverDelegate:nil];
-    
+    // Pass self as userDriverDelegate to enable gentle reminders for background apps
+    updaterController_ = [[SPUStandardUpdaterController alloc]
+                          initWithStartingUpdater:YES
+                          updaterDelegate:nil
+                          userDriverDelegate:self];
+
     if (updaterController_) {
         SPUUpdater *updater = updaterController_.updater;
-        
-        // Enable automatic checks (this is typically set in Info.plist)
-        // updater.automaticallyChecksForUpdates = YES;
-        
-        // The gentle reminder is typically configured via Info.plist with:
-        // SUScheduledCheckInterval - time between checks (in seconds)
-        // 
-        // However, Sparkle 2.x automatically implements gentle reminders when:
-        // 1. Automatic checks are enabled (SUEnableAutomaticChecks = YES in Info.plist)
-        // 2. A check interval is set (SUScheduledCheckInterval in Info.plist)
-        //
-        // The framework will automatically show reminders for pending updates
-        // according to the documentation at:
-        // https://sparkle-project.org/documentation/gentle-reminders
-        
-        FMTLogInfo(@"Sparkle updater configured - automatic checks: %d, can check: %d", 
-                  updater.automaticallyChecksForUpdates, 
+
+        FMTLogInfo(@"Sparkle updater configured - automatic checks: %d, can check: %d",
+                  updater.automaticallyChecksForUpdates,
                   updater.canCheckForUpdates);
     } else {
         FMTLogError(@"Failed to create Sparkle updater controller");
@@ -374,6 +366,46 @@ NSDictionary *allShiftActions = nil;
     FMTLogInfo(@"Sparkle framework not available - skipping updater setup");
 #endif
 }
+
+#if __has_include(<Sparkle/Sparkle.h>)
+#pragma mark - SPUStandardUserDriverDelegate
+
+// Enable gentle scheduled update reminders for background/menu bar apps
+- (BOOL)supportsGentleScheduledUpdateReminders {
+    return YES;
+}
+
+// Called when Sparkle is about to show an update
+// For background apps, we bring the app to foreground so the user sees the update dialog
+- (void)standardUserDriverWillHandleShowingUpdate:(BOOL)handleShowingUpdate
+                                        forUpdate:(SUAppcastItem *)update
+                                            state:(SPUUserUpdateState *)state {
+    if (handleShowingUpdate) {
+        FMTLogInfo(@"Sparkle will show update: %@", update.displayVersionString);
+
+        // Bring app to foreground so user sees the update dialog
+        // This is the key behavior for gentle reminders - ensuring visibility
+        [NSApp activateIgnoringOtherApps:YES];
+    }
+}
+
+// Called when the user responds to the update alert
+- (void)standardUserDriverDidReceiveUserAttentionForUpdate:(SUAppcastItem *)update {
+    FMTLogInfo(@"User acknowledged update: %@", update.displayVersionString);
+
+    // Clear any visual indicators (badges, etc.)
+    // For now, we don't have a badge to clear, but this is where you'd do it
+}
+
+// Called when the update session finishes
+- (void)standardUserDriverWillFinishUpdateSession {
+    FMTLogInfo(@"Update session finished");
+
+    // Return to background mode (hide dock icon if needed)
+    // For menu bar apps, no action needed - we're already in background mode
+}
+
+#endif
 
 - (void)checkAuthorization {
     // Get app information for debugging
@@ -450,9 +482,6 @@ NSDictionary *allShiftActions = nil;
 - (void)relaunchApplication {
     // Get the app path
     NSString *appPath = [[NSBundle mainBundle] bundlePath];
-    NSString *relaunchPath = [NSString stringWithFormat:@"%@/Contents/MacOS/%@",
-                              appPath,
-                              [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleExecutable"]];
     
     FMTLogInfo(@"Relaunching app from: %@", appPath);
     
@@ -497,6 +526,12 @@ NSDictionary *allShiftActions = nil;
     
     // Setup menu bar icon
     [self setupMenuBar_];
+    
+    // Listen for hotkey changes from preferences
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hotkeyChanged:)
+                                                 name:kHotKeyChangedNotification
+                                               object:nil];
     
     // Initial authorization check - will prompt if needed
     [self checkAuthorization];
@@ -841,11 +876,50 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
+    // Remove observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     // Save usage statistics
     if (usageStatistics_) {
         NSString *usageStatisticsFile = [[[NSFileManager defaultManager] applicationSupportDirectory] stringByAppendingPathComponent:kUsageStatisticsFileName];
         [usageStatistics_ saveToFile:usageStatisticsFile];
     }
+}
+
+- (void)hotkeyChanged:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSString *identifier = [userInfo objectForKey:kActionIdentifierKey];
+    NSInteger keyCode = [[userInfo objectForKey:kHotKeyKeyCodeKey] integerValue];
+    NSUInteger modifiers = [[userInfo objectForKey:kHotKeyModifiersKey] unsignedIntegerValue];
+    
+    FMTLogInfo(@"Hotkey changed for action '%@': keyCode=%ld modifiers=%lu", 
+               identifier, (long)keyCode, (unsigned long)modifiers);
+    
+    // Unregister old hotkey if it exists
+    FMTHotKey *oldHotKey = [allHotKeys_ objectForKey:identifier];
+    if (oldHotKey) {
+        [hotKeyManager_ unregisterHotKey:oldHotKey];
+        [allHotKeys_ removeObjectForKey:identifier];
+        FMTLogDebug(@"Unregistered old hotkey for action '%@'", identifier);
+    }
+    
+    // Register new hotkey if valid
+    if (keyCode > 0) {
+        FMTHotKey *newHotKey = [[FMTHotKey alloc] initWithKeyCode:keyCode modifiers:modifiers];
+        
+        [hotKeyManager_ registerHotKey:newHotKey 
+                               handler:@selector(invokeShiftItAction:) 
+                              provider:self 
+                              userData:identifier];
+        
+        [allHotKeys_ setObject:newHotKey forKey:identifier];
+        FMTLogInfo(@"Registered new hotkey for action '%@'", identifier);
+        
+        [newHotKey release];
+    }
+    
+    // Update menu
+    [self updateStatusMenuWithActions_];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {

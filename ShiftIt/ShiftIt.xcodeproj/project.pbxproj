@@ -48,6 +48,9 @@
 		D26522122F08463700D1BEF8 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D265220F2F0845EF00D1BEF8 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D26522142F0848A300D1BEF8 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D265220F2F0845EF00D1BEF8 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D26522172F0849D300D1BEF8 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = D26522162F0849D300D1BEF8 /* Sparkle */; };
+		D291F2662F08CA3300EB4C49 /* KeyboardShortcutRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D291F2642F08CA3300EB4C49 /* KeyboardShortcutRecorder.swift */; };
+		D291F2682F08CB8C00EB4C49 /* SETUP_GUIDE.md in Resources */ = {isa = PBXBuildFile; fileRef = D291F2672F08CB8C00EB4C49 /* SETUP_GUIDE.md */; };
+		D291F26A2F08CBBC00EB4C49 /* BUILD_ERROR_FIXES.md in Resources */ = {isa = PBXBuildFile; fileRef = D291F2692F08CBBC00EB4C49 /* BUILD_ERROR_FIXES.md */; };
 		E4BCF1FFDFE5D8200B19C785 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		E4BCFDF71237154D17E7FFBC /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PreferencesWindowController.m */; };
@@ -175,6 +178,10 @@
 		D2540B3E2F05A02C0099EECB /* WindowManagerExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManagerExample.swift; sourceTree = "<group>"; };
 		D2540B402F05A0520099EECB /* ModernWindowDriverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernWindowDriverTests.swift; sourceTree = "<group>"; };
 		D265220F2F0845EF00D1BEF8 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		D291F2642F08CA3300EB4C49 /* KeyboardShortcutRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutRecorder.swift; sourceTree = "<group>"; };
+		D291F2652F08CA3300EB4C49 /* ShiftIt-Bridging-Header 2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShiftIt-Bridging-Header 2.h"; sourceTree = "<group>"; };
+		D291F2672F08CB8C00EB4C49 /* SETUP_GUIDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = SETUP_GUIDE.md; sourceTree = "<group>"; };
+		D291F2692F08CBBC00EB4C49 /* BUILD_ERROR_FIXES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = BUILD_ERROR_FIXES.md; sourceTree = "<group>"; };
 		E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAdjacentRectanglesTest.m; sourceTree = "<group>"; };
 		E4BCF1236CA369B89F718229 /* ShiftIt Tests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ShiftIt Tests-Prefix.pch"; sourceTree = "<group>"; };
 		E4BCF6EB42F45803C08BAC36 /* FMTError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTError.m; sourceTree = "<group>"; };
@@ -373,6 +380,8 @@
 				F2DC61241127ACDE000E1A5B /* SIWindowManager.m */,
 				2743F1A4140EFCC700C23A67 /* Drivers */,
 				27F4687F141CC08F001209F6 /* ShiftIt.h */,
+				D291F2642F08CA3300EB4C49 /* KeyboardShortcutRecorder.swift */,
+				D291F2652F08CA3300EB4C49 /* ShiftIt-Bridging-Header 2.h */,
 			);
 			name = "ShiftIt Framework";
 			sourceTree = "<group>";
@@ -511,6 +520,8 @@
 			children = (
 				F2520B621133874D00DB826F /* PreferencesWindowController.h */,
 				F2520B631133874D00DB826F /* PreferencesWindowController.m */,
+				D291F2672F08CB8C00EB4C49 /* SETUP_GUIDE.md */,
+				D291F2692F08CBBC00EB4C49 /* BUILD_ERROR_FIXES.md */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -602,11 +613,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D291F2682F08CB8C00EB4C49 /* SETUP_GUIDE.md in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				274B4CD719364F1E00C0A8C1 /* AccessibilitySettingsMaverick.png in Resources */,
 				CA0A5415194C030700AC7F45 /* Localizable.strings in Resources */,
 				27CD1A3019437FB20063D5AB /* ShiftItMenuIcon.png in Resources */,
 				279AF80F19432F6F0048FE5F /* AccessibilitySettingsLion.png in Resources */,
+				D291F26A2F08CBBC00EB4C49 /* BUILD_ERROR_FIXES.md in Resources */,
 				CA0A5412194C02ED00AC7F45 /* PreferencesWindow.xib in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */,
@@ -657,6 +670,7 @@
 				2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */,
 				27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */,
 				27F4FD4C12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */,
+				D291F2662F08CA3300EB4C49 /* KeyboardShortcutRecorder.swift in Sources */,
 				D231C35F2F05C169009793DE /* ShortcutRecorderStubs.m in Sources */,
 				27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */,
 				27F4FD5612730F4600A65750 /* FMTLoginItems.m in Sources */,
@@ -776,6 +790,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -788,6 +803,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.shiftitapp.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = ShiftIt;
+				SWIFT_OBJC_BRIDGING_HEADER = "ShiftIt-Bridging-Header.h";
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = .;
 			};
 			name = Debug;
@@ -799,6 +815,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
@@ -809,6 +826,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.shiftitapp.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = ShiftIt;
+				SWIFT_OBJC_BRIDGING_HEADER = "ShiftIt-Bridging-Header.h";
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = .;
 			};
 			name = Release;
@@ -859,7 +877,7 @@
 				IBC_PLUGIN_SEARCH_PATHS = "";
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = "-ldl";
@@ -910,7 +928,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
 				INSTALL_PATH = /Applications;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = "-ldl";

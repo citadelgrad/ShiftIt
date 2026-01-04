@@ -46,7 +46,7 @@ static inline NSString* FMTStr(NSString *fmt, ...) {
     va_list args;
 
     va_start(args, fmt);
-	s = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
+    s = [[NSString alloc] initWithFormat:fmt arguments:args];
     va_end(args);
 
     return s;
@@ -108,6 +108,17 @@ static inline void FMTInDebugOnly(FMTDebugBlock block) {
 
 #ifndef SINGLETON_BOILERPLATE_FULL
 
+#if __has_feature(objc_arc)
+#define SINGLETON_BOILERPLATE_FULL(_object_name_, _shared_obj_name_, _init_) \
+static _object_name_ *z##_shared_obj_name_ = nil;  \
++ (_object_name_ *)_shared_obj_name_ {             \
+static dispatch_once_t onceToken;                \
+dispatch_once(&onceToken, ^{                     \
+z##_shared_obj_name_ = [[self alloc] _init_];  \
+});                                              \
+return z##_shared_obj_name_;                     \
+}
+#else
 #define SINGLETON_BOILERPLATE_FULL(_object_name_, _shared_obj_name_, _init_) \
 static _object_name_ *z##_shared_obj_name_ = nil;  \
 + (_object_name_ *)_shared_obj_name_ {             \
@@ -144,6 +155,7 @@ return self;                                     \
 }                                                  \
 - (id)copyWithZone:(NSZone *) __unused zone { \
 return self;                                     \
-}                                                  \
+}
+#endif
 
 #endif // SINGLETON_BOILERPLATE_FULL

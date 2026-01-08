@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pipenv --version:*)",
+      "Bash(uv:*)",
+      "Bash(brew list:*)",
+      "Bash(CFLAGS=\"-I/opt/homebrew/opt/openssl@3/include\" LDFLAGS=\"-L/opt/homebrew/opt/openssl@3/lib\" uv sync:*)",
+      "Bash(SHIFTIT_GITHUB_USER=test SHIFTIT_GITHUB_REPO=test SHIFTIT_PRIVATE_KEY=/dev/null SHIFTIT_GITHUB_TOKEN=/dev/null:*)",
+      "Bash(xcodebuild:*)",
+      "Bash(tar:*)",
+      "Bash(curl -L -o shortcutrecorder.zip \"https://github.com/Kentzo/ShortcutRecorder/releases/download/3.4.2/ShortcutRecorder-3.4.2.zip\")",
+      "Bash(cat:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}

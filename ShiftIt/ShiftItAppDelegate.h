@@ -24,9 +24,9 @@
 @class PreferencesWindowController;
 @class FMTHotKeyManager;
 
-@interface ShiftItAppDelegate : NSObject {
-    IBOutlet NSMenu *statusMenu_;
-}
+@interface ShiftItAppDelegate : NSObject
+
+@property (assign) IBOutlet NSMenu *statusMenu_;
 
 - (IBAction)showPreferences:(id)sender;
 

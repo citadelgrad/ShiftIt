@@ -144,7 +144,7 @@
             }
 
             CGFloat dist = FMTPointDistanceToLine(a, b, p);
-            [res addObject:[[[SIDistanceValueRect alloc] initWithDistance:dist rect:cRect value:[obj value]] autorelease]];
+            [res addObject:[[[SIDistanceValueRect alloc] initWithDistance:dist rect:cRect value:[(SIValueRect *)obj value]] autorelease]];
         }
     }];
 
@@ -164,7 +164,7 @@
 
 - (NSArray *)rectanglesInDirection:(FMTDirection)direction fromValue:(id)value {
     SIValueRect *rv = [rectValues_ find:^BOOL(id item) {
-        return ([[item value] isEqual:value]);
+        return ([[(SIValueRect *)item value] isEqual:value]);
     }];
     
     return [self rectanglesInDirection:direction fromRect:[rv rect]];
@@ -183,7 +183,7 @@
         
         // add to path
         for (id r in rects) {
-            id val = [r value];
+            id val = [(SIDistanceValueRect *)r value];
             if (![res containsObject:val]) {
                 [res addObject:val];
             }

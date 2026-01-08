@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>SUScheduledCheckInterval</key>
+	<integer>604800</integer>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>CFBundleDisplayName</key>
+	<string></string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>ShiftIt needs accessibility permission to move and resize windows.</string>
+	<key>SUPublicEDKey</key>
+	<string>Gu+4wCL4ZN6PbcnOXgHXs4xG/lqtqyqztG2tgVEbx3o=</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -9,7 +19,7 @@
 	<key>CFBundleIconFile</key>
 	<string>ShiftIt.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.shiftitapp.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -17,11 +27,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.6</string>
+	<string>2.0.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.6.6</string>
+	<string>2.0.0</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
@@ -35,8 +45,6 @@
 	<key>SUEnableSystemProfiling</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://raw.github.com/fikovnik/ShiftIt/master/release/appcast.xml</string>
-	<key>SUPublicDSAKeyFile</key>
-	<string>dsa_pub.pem</string>
+	<string>https://raw.github.com/citadelgrad/ShiftIt/master/release/appcast.xml</string>
 </dict>
 </plist>

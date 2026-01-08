@@ -19,7 +19,9 @@
 
 
 #import <Cocoa/Cocoa.h>
-#import <ShortcutRecorder/ShortcutRecorder.h>
+
+// Forward declaration of Swift class
+@class KeyboardShortcutRecorder;
 
 @interface PreferencesWindowController : NSWindowController {
  @private

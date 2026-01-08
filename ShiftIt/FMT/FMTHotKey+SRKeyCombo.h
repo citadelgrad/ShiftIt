@@ -22,13 +22,18 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import <ShortcutRecorder/SRCommon.h>
+// ShortcutRecorder has been replaced with KeyboardShortcutManager
+// This file is deprecated
+// #import <ShortcutRecorder/SRCommon.h>
 
 #import "FMTHotKey.h"
 
+// Deprecated: ShortcutRecorder integration removed
+// Use KeyboardShortcutManager in WindowManagerExample.swift instead
 @interface FMTHotKey (SRKeyCombo)
 
-+ (FMTHotKey *)hotKey:(KeyCombo)keyCombo;
-- (KeyCombo)asKeyCombo;
+// These methods are deprecated and will return nil/empty values
++ (FMTHotKey *)hotKey:(int)keyCombo;
+- (int)asKeyCombo;
 
 @end

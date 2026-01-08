@@ -20,6 +20,25 @@
 #import "PreferencesWindowController.h"
 #import "ShiftItApp.h"
 
+// Import Swift classes
+// The generated header name is based on your target's Product Module Name
+// Check Build Settings -> Packaging -> Product Module Name
+// Common names: ShiftIt-Swift.h, ShiftItApp-Swift.h
+#if __has_include("ShiftIt-Swift.h")
+    #import "ShiftIt-Swift.h"
+    #define SWIFT_IMPORTED 1
+#elif __has_include("ShiftItApp-Swift.h")
+    #import "ShiftItApp-Swift.h"
+    #define SWIFT_IMPORTED 1
+#else
+    #warning "Could not find Swift generated header. Check your Product Module Name in Build Settings."
+    #define SWIFT_IMPORTED 0
+#endif
+
+// Declare protocol conformance here after Swift header is imported
+@interface PreferencesWindowController () <KeyboardShortcutRecorderDelegate>
+@end
+
 NSString *const kKeyCodePrefKeySuffix = @"KeyCode";
 NSString *const kModifiersPrefKeySuffix = @"Modifiers";
 
@@ -109,34 +128,42 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 }
 
 -(IBAction)reportIssue:(id)sender {
-    NSInteger ret = NSRunAlertPanel(NSLocalizedString(@"Before you report new issue", nil),
-            NSLocalizedString(@"Please make sure that you look at the other issues before you submit a new one.", nil),
-            NSLocalizedString(@"Take me to github.com", nil), NULL, NULL);
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:NSLocalizedString(@"Before you report new issue", nil)];
+    [alert setInformativeText:NSLocalizedString(@"Please make sure that you look at the other issues before you submit a new one.", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Take me to github.com", nil)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", nil)];
     
-    if (ret == NSAlertDefaultReturn) {
+    if ([alert runModal] == NSAlertFirstButtonReturn) {
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kShiftItGithubIssueURL]];
     }
+    
+    [alert release];
 }
 
 - (IBAction)revealLogFileInFinder:(id)sender {
     if (debugLoggingFile_) {
         NSURL *fileURL = [NSURL fileURLWithPath:debugLoggingFile_];
-        [[NSWorkspace sharedWorkspace] selectFile:[fileURL path] inFileViewerRootedAtPath:nil];
+        // Use modern API or pass empty string instead of nil
+        if (@available(macOS 10.15, *)) {
+            [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[fileURL]];
+        } else {
+            [[NSWorkspace sharedWorkspace] selectFile:[fileURL path] inFileViewerRootedAtPath:@""];
+        }
     }
 }
 
 - (IBAction)showMenuBarIconAction:(id)sender {
     if (![showMenuIcon state]) {
-        NSAlert *alert = [NSAlert
-                alertWithMessageText:@"Disabling menu icon"
-                       defaultButton:nil
-                     alternateButton:nil
-                         otherButton:nil
-           informativeTextWithFormat:@"You chose to disable the menu icon. This means that you won't be able to easily open the Preferences window in the future.\n"
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Disabling menu icon"];
+        [alert setInformativeText:@"You chose to disable the menu icon. This means that you won't be able to easily open the Preferences window in the future.\n"
                    "\n"
                    "To open the Preferences window, while the menu icon is hidden, just relaunch the application."];
+        [alert addButtonWithTitle:@"OK"];
         
         [alert runModal];
+        [alert release];
     }
 }
 
@@ -244,7 +271,7 @@ static NSString *hotkeyIdentifiers[] = {
     FMTAssertNotNil(action);
     if (tableColumn == hotkeyLabelColumn_) {
         NSTextField* text = [[NSTextField alloc] initWithFrame:tableView.frame];
-        text.alignment = NSRightTextAlignment;
+        text.alignment = NSTextAlignmentRight;
         text.drawsBackground = NO;
         text.stringValue = action.label;
         [text setBordered:NO];
@@ -252,51 +279,90 @@ static NSString *hotkeyIdentifiers[] = {
         return text;
     }
     if (tableColumn == hotkeyColumn_) {
-        SRRecorderControl* recorder = [[SRRecorderControl alloc] initWithFrame:tableView.frame];
+#if SWIFT_IMPORTED
+        // Use modern KeyboardShortcutRecorder
+        NSRect frame = NSMakeRect(0, 0, tableView.frame.size.width - 10, 22);
+        KeyboardShortcutRecorder *recorder = [[KeyboardShortcutRecorder alloc] initWithFrame:frame];
+        recorder.actionIdentifier = identifier;
         recorder.delegate = self;
-        recorder.identifier = identifier;
-        [self updateRecorderCombo:recorder forIdentifier:identifier];
+        
+        // Load current shortcut from user defaults
+        [recorder loadFromUserDefaults];
+        
         return recorder;
+#else
+        // Fallback: Show message that Swift integration is needed
+        NSTextField *placeholderText = [[NSTextField alloc] initWithFrame:tableView.frame];
+        [placeholderText setStringValue:@"Setup required: Check KEYBOARD_SHORTCUT_INTEGRATION.md"];
+        [placeholderText setEditable:NO];
+        [placeholderText setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+        [placeholderText setTextColor:[NSColor systemRedColor]];
+        return placeholderText;
+#endif
     }
     FMTFail(@"Unknown tableView or tableColumn");
     return NULL;
 }
 
-- (void)shortcutRecorder:(SRRecorderControl *)recorder keyComboDidChange:(KeyCombo)newKeyCombo {
-    NSString *identifier = recorder.identifier;
+#if SWIFT_IMPORTED
+// Modern KeyboardShortcutRecorder delegate method
+- (void)shortcutRecorder:(KeyboardShortcutRecorder *)recorder
+      didChangeKeyCode:(NSInteger)keyCode
+             modifiers:(NSUInteger)modifiers {
+    NSString *identifier = recorder.actionIdentifier;
     FMTAssertNotNil(identifier);
-
+    
     ShiftItAction *action = [allShiftActions objectForKey:identifier];
     FMTAssertNotNil(action);
-
-    FMTLogDebug(@"ShiftIt action %@ hotkey changed: ", [action identifier]);
-
+    
+    FMTLogInfo(@"ShiftIt action %@ hotkey changed: keyCode=%ld modifiers=%lu", 
+               [action identifier], (long)keyCode, (unsigned long)modifiers);
+    
+    // Post notification for hotkey change
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:3];
     [userInfo setObject:[action identifier] forKey:kActionIdentifierKey];
-    [userInfo setObject:[NSNumber numberWithInteger:newKeyCombo.code] forKey:kHotKeyKeyCodeKey];
-    [userInfo setObject:[NSNumber numberWithLong:newKeyCombo.flags] forKey:kHotKeyModifiersKey];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:kHotKeyChangedNotification object:self userInfo:userInfo];
+    [userInfo setObject:[NSNumber numberWithInteger:keyCode] forKey:kHotKeyKeyCodeKey];
+    [userInfo setObject:[NSNumber numberWithUnsignedInteger:modifiers] forKey:kHotKeyModifiersKey];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kHotKeyChangedNotification 
+                                                        object:self 
+                                                      userInfo:userInfo];
 }
+#endif
 
 - (void)updateRecorderCombos {
+#if SWIFT_IMPORTED
+    FMTLogInfo(@"Updating keyboard shortcut recorders");
+    
+    // Reload all recorder views in the table
     for (int row = 0; row < sizeof(hotkeyIdentifiers) / sizeof(hotkeyIdentifiers[0]); ++row) {
         NSString* identifier = hotkeyIdentifiers[row];
         if (identifier == NULL)
             continue;
-        SRRecorderControl *recorder = [hotkeysView_ viewAtColumn:1 row:row makeIfNecessary:NO];
-        if (recorder == NULL)
-            continue;
-        [self updateRecorderCombo:recorder forIdentifier:identifier];
+            
+        KeyboardShortcutRecorder *recorder = (KeyboardShortcutRecorder *)[hotkeysView_ viewAtColumn:1 row:row makeIfNecessary:NO];
+        if (recorder && [recorder isKindOfClass:[KeyboardShortcutRecorder class]]) {
+            [recorder loadFromUserDefaults];
+        }
     }
+#else
+    FMTLogInfo(@"Swift integration not available - cannot update recorders");
+#endif
 }
 
-- (void)updateRecorderCombo:(SRRecorderControl *)recorder forIdentifier:(NSString *)identifier {
+- (void)updateRecorderCombo:(id)recorder forIdentifier:(NSString *)identifier {
+    // ShortcutRecorder removed - this method is deprecated
+    // Keyboard shortcuts are handled by KeyboardShortcutManager
+    FMTLogInfo(@"updateRecorderCombo called but ShortcutRecorder has been replaced");
+    
+    // Old implementation commented out:
+    /*
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     KeyCombo combo;
     combo.code = [defaults integerForKey:KeyCodePrefKey(identifier)];
     combo.flags = [defaults integerForKey:ModifiersPrefKey(identifier)];
     [recorder setKeyCombo:combo];
+    */
 }
 
 #pragma mark TabView delegate methods

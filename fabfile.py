@@ -8,9 +8,9 @@ try:
     import sh
 
     gpg = sh.Command('gpg')
-except ImportError as exc:
+except (ImportError, Exception) as exc:
     def gpg(*args, **kwargs):
-        raise NotImplementedError('the sh module is not installed; unable to use gpg-encrypted keys')
+        raise NotImplementedError('the sh module is not installed or gpg command not found; unable to use gpg-encrypted keys')
 
 
 class DecryptedFiles(object):
@@ -49,8 +49,12 @@ proj_name = 'ShiftIt'
 proj_info_plist = 'ShiftIt-Info.plist'
 proj_src_dir = 'ShiftIt'
 
-proj_private_key = DecryptedFiles.get_decrypted_key_path(os.environ.get('SHIFTIT_PRIVATE_KEY', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'))
-proj_github_token_file = DecryptedFiles.get_decrypted_key_path(os.environ.get('SHIFTIT_GITHUB_TOKEN', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/github.token'))
+# GitHub token for release automation
+proj_github_token_file = DecryptedFiles.get_decrypted_key_path(os.environ.get('SHIFTIT_GITHUB_TOKEN', os.path.expanduser('~/Keys/ShiftIt/github.token')))
+
+# Sparkle sign_update tool path - reads EdDSA key from macOS Keychain by default
+# The private key is stored in Keychain under service "https://sparkle-project.org" with account "ed25519"
+proj_sign_update_tool = os.environ.get('SHIFTIT_SIGN_UPDATE', os.path.join(os.path.dirname(__file__), 'ShiftIt', 'bin', 'sign_update'))
 
 release_notes_template_html = '''
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
@@ -69,7 +73,7 @@ release_notes_template_html = '''
 
         More information about this release can be found on <a href="{{milestone_url}}">github</a>.
         <br/><br/>
-        If you find any bugs please report them on <a href="http://github.com/fikovnik/ShiftIt/issues">github</a>.
+        If you find any bugs please report them on <a href="http://github.com/citadelgrad/ShiftIt/issues">github</a>.
     </body>
 </html>
 '''.strip()
@@ -84,31 +88,75 @@ release_notes_template_md = '''
 
 More information about this release can be found on [github]({{milestone_url}}).
 
-If you find any bugs please report them on [github](http://github.com/fikovnik/ShiftIt/issues).
+If you find any bugs please report them on [github](http://github.com/citadelgrad/ShiftIt/issues).
 '''.strip()
 
 appcast_template = '''
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
    <channel>
       <title>{{proj_name}} Changelog</title>
       <link>{{proj_appcast_url}}</link>
       <language>en</language>
-         <item>
-            <title>{{proj_name}} version {{proj_version}}</title>
-                <sparkle:releaseNotesLink>
-                    {{proj_release_notes_url}}
-                </sparkle:releaseNotesLink>
-            <pubDate>{{date}}</pubDate>
-            <enclosure url="{{download_url}}" sparkle:version="{{proj_version}}" length="{{download_size}}" type="application/octet-stream" sparkle:dsaSignature="{{download_signature}}" />
-         </item>
+      <item>
+         <title>{{proj_name}} version {{proj_version}}</title>
+         <sparkle:releaseNotesLink>
+            {{proj_release_notes_url}}
+         </sparkle:releaseNotesLink>
+         <pubDate>{{date}}</pubDate>
+         <enclosure
+            url="{{download_url}}"
+            sparkle:version="{{proj_version}}"
+            length="{{download_size}}"
+            type="application/octet-stream"
+            sparkle:edSignature="{{download_signature}}" />
+         <sparkle:minimumSystemVersion>14.6</sparkle:minimumSystemVersion>
+      </item>
    </channel>
 </rss>
 '''.strip()
 
-from fabric.api import local, execute, abort, task, lcd, puts, settings
-from fabric.contrib.console import confirm
-from fabric.colors import green
+from invoke import task, run
+from invoke.context import Context
+
+# Compatibility layer for Fabric 1.x to 3.x migration
+def local(cmd, capture=False):
+    result = run(cmd, hide=capture, warn=True)
+    if capture:
+        return result.stdout
+    return result
+
+def puts(msg):
+    print(msg)
+
+def green(msg):
+    return f"\033[92m{msg}\033[0m"
+
+class lcd:
+    def __init__(self, path):
+        import os
+        self.path = path
+        self.old_path = None
+    def __enter__(self):
+        import os
+        self.old_path = os.getcwd()
+        os.chdir(self.path)
+    def __exit__(self, *args):
+        import os
+        os.chdir(self.old_path)
+
+class settings:
+    def __init__(self, warn_only=False):
+        self.warn_only = warn_only
+    def __enter__(self):
+        pass
+    def __exit__(self, *args):
+        pass
+
+def execute(func):
+    ctx = Context()
+    return func(ctx)
+
 from xml.etree import ElementTree
 
 import pystache
@@ -157,7 +205,7 @@ def _gen_release_notes(template):
         issues = closed_issues,
         proj_name=proj_name,
         proj_version=proj_version,
-        milestone_url='https://github.com/fikovnik/ShiftIt/issues?milestone=%d' % milestone.number,
+        milestone_url='https://github.com/citadelgrad/ShiftIt/issues?milestone=%d' % milestone.number,
         )
 
     return pystache.render(template, release_notes)
@@ -180,8 +228,8 @@ proj_version = _get_bundle_version(proj_info_plist)
 proj_archive_name = proj_name + '-' + proj_version + '.zip'
 proj_archive_path = os.path.join(proj_build_dir, proj_archive_name)
 
-proj_download_url = 'https://github.com/fikovnik/ShiftIt/releases/download/version-%s/%s' % (proj_version, proj_archive_name)
-proj_release_notes_url = 'http://htmlpreview.github.com/?https://raw.github.com/fikovnik/ShiftIt/master/release/release-notes-'+proj_version+'.html'
+proj_download_url = 'https://github.com/citadelgrad/ShiftIt/releases/download/version-%s/%s' % (proj_version, proj_archive_name)
+proj_release_notes_url = 'http://htmlpreview.github.com/?https://raw.github.com/citadelgrad/ShiftIt/master/release/release-notes-'+proj_version+'.html'
 proj_release_notes_html_file = os.path.join(os.getcwd(),'release','release-notes-'+proj_version+'.html')
 proj_appcast_file = os.path.join(os.getcwd(),'release','appcast.xml')
 proj_github_token = _load_github_token()
@@ -198,17 +246,17 @@ shiftit = github.repository(SHIFTIT_GITHUB_USER, SHIFTIT_GITHUB_REPO)
 ################################################################################
 
 @task
-def info():
+def info(ctx):
     '''
     Output all the build properties
     '''
 
-    print 'Build info:'
+    print('Build info:')
     for (k,v) in [(k,v) for (k,v) in globals().items() if k.startswith('proj_')]:
-        print "\t%s: %s" % (k[len('proj_'):],v)
+        print("\t%s: %s" % (k[len('proj_'):],v))
 
 @task
-def build():
+def build(ctx):
     '''
     Makes a build by executing xcodebuild
     '''
@@ -217,7 +265,7 @@ def build():
         local('xcodebuild -target %s -configuration Release' % proj_name)
 
 @task
-def archive():
+def archive(ctx):
     '''
     Archives build
     '''
@@ -226,13 +274,13 @@ def archive():
     local('ditto -ck --keepParent %s %s' % (proj_app_dir, proj_archive_path))
 
 @task
-def release_notes():
+def release_notes(ctx):
     with open(proj_release_notes_html_file,"w") as f:
         f.write(_gen_release_notes(release_notes_template_html))
         puts('Written '+proj_release_notes_html_file)
 
 @task
-def appcast():
+def appcast(ctx):
     '''
     Prepare the release: sign the build, generate appcast, generate release notes, commit and push.
     '''
@@ -243,23 +291,16 @@ def appcast():
     tree = ElementTree.parse(proj_info_plist)
     root = tree.getroot().find('dict')
     elem = list(root.findall('*'))
-    appcast_url = _find(lambda (k,v): k.text == 'SUFeedURL', zip(*[iter(elem)]*2))[1].text.strip()
+    appcast_url = _find(lambda kv: kv[0].text == 'SUFeedURL', zip(*[iter(elem)]*2))[1].text.strip()
 
     # dependencies
     execute(archive)
     execute(release_notes)
 
-    sign_file = tempfile.mktemp()
-    local('openssl dgst -sha1 -binary < %s | openssl dgst -dss1 -sign %s > %s'
-        % (proj_archive_path, proj_private_key, sign_file))
-    local('openssl dgst -sha1 -binary < %s | openssl dgst -dss1 -verify %s -signature %s'
-        % (proj_archive_path, proj_public_key, sign_file))
-
-    signature = None
-    with open(sign_file) as f:
-        signature = base64.b64encode(f.read())
-
-    os.remove(sign_file)
+    # Sign with EdDSA using Sparkle's sign_update tool
+    # The private key is automatically read from macOS Keychain (service: https://sparkle-project.org, account: ed25519)
+    sign_result = local('%s %s' % (proj_sign_update_tool, proj_archive_path), capture=True)
+    signature = sign_result.strip()
 
     # appcast properties
     appcast = dict(
@@ -277,7 +318,7 @@ def appcast():
         f.write(pystache.render(appcast_template, appcast))
 
 @task
-def release():
+def release(ctx):
     '''
     Prepares the release to github
     '''
@@ -291,7 +332,7 @@ def release():
     if len(open_issues) > 0:
         puts('Warning: there are still open issues')
         for i in open_issues:
-            print '\t * #%s: %s' % (i.number, i.title)
+            print('\t * #%s: %s' % (i.number, i.title))
 
 
     execute(appcast)
@@ -301,8 +342,8 @@ def release():
     puts(green('1. Commit appcast and release notes'))
     puts('message: "Added appcast and release notes for the ShiftIt %s release"' % proj_version)
     puts(green('2. Finnish the git flow'))
-    puts(green('3. Close milestone at: https://github.com/fikovnik/ShiftIt/milestones'))
-    puts(green('4. Release at: https://github.com/fikovnik/ShiftIt/releases and drafts a new release with:'))
+    puts(green('3. Close milestone at: https://github.com/citadelgrad/ShiftIt/milestones'))
+    puts(green('4. Release at: https://github.com/citadelgrad/ShiftIt/releases and drafts a new release with:'))
     puts('-'*100)
     puts('tag: version-'+proj_version)
     puts('title: '+proj_version)

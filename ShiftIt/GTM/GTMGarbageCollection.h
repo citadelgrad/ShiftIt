@@ -39,7 +39,10 @@
 // GTMNSMakeUncollectable is for global maps, etc. that we don't
 // want released ever. You should still retain these in non-gc code.
 GTM_INLINE void GTMNSMakeUncollectable(id object) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   [[NSGarbageCollector defaultCollector] disableCollectorForPointer:object];
+#pragma clang diagnostic pop
 }
 
 // Hopefully no code really needs this, but GTMIsGarbageCollectionEnabled is
@@ -48,7 +51,10 @@ GTM_INLINE void GTMNSMakeUncollectable(id object) {
 // frameworks, so this is here so GTM unittests and detect it, and not run
 // individual tests to work around bugs in Apple's frameworks.
 GTM_INLINE BOOL GTMIsGarbageCollectionEnabled(void) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   return ([NSGarbageCollector defaultCollector] != nil);
+#pragma clang diagnostic pop
 }
 
 #else

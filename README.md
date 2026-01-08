@@ -1,177 +1,155 @@
-<h1><img src="https://raw.github.com/fikovnik/ShiftIt/develop/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt <a href="https://travis-ci.org/fikovnik/ShiftIt"><img src="https://travis-ci.org/fikovnik/ShiftIt.svg" valign="middle" alt="Build Status"/></a></h1>
+<h1><img src="https://raw.github.com/citadelgrad/ShiftIt/master/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt</h1>
 
-*Managing window size and position in OSX*
+*Managing window size and position in macOS*
 
-# Looking for a new maintainer #[296](https://github.com/fikovnik/ShiftIt/issues/296).
+## About
 
-This project is looking for a new maintainer. Until that transition is completed, **there will likely not be further development on this project**. 
+ShiftIt is an application for macOS that allows you to quickly manipulate window position and size using keyboard shortcuts. It is a full featured window organizer for macOS.
 
-## Alternatives
-
-A highly recommended alternative to ShiftIt that can be implemented using [Hammerspoon](http://hammerspoon.org).
-
-You can use the <img src="https://raw.githubusercontent.com/Hammerspoon/hammerspoon/master/Hammerspoon/Images.xcassets/AppIcon.appiconset/icon_16x16%402x.png" height="18" valign="middle" /> [ShiftIt Spoon](https://github.com/peterklijn/hammerspoon-shiftit) which implements the ShiftIt functionality in Hammerspoon.
-
-Additionally there is a step-by-step guide to replicating ShiftIt's features using Hammerspoon yourself: https://github.com/fikovnik/ShiftIt/wiki/The-Hammerspoon-Alternative
-
-
-# About
-
-**Looking for a new maintainer #[296](https://github.com/fikovnik/ShiftIt/issues/296).**
-
-ShiftIt is an application for OSX that allows you to quickly manipulate window position and size using keyboard shortcuts.
-It intends to become a full featured window organizer for OSX.
-It is a complete rewrite of the original [ShiftIt](http://code.google.com/p/shiftit/) by Aravindkumar Rajendiran which is not longer under development.
-For discussing any sort of stuff about this app, please create a [new issue](https://github.com/fikovnik/ShiftIt/issues).
+This is a modernized fork of the original [ShiftIt](https://github.com/fikovnik/ShiftIt) by Filip Krikava, updated with:
+- **Sparkle 2.8** for secure auto-updates (EdDSA signing)
+- **Swift 6** modernization
+- **macOS 14.6+ (Sonoma)** support
+- **Ultrawide monitor support** - divide screen by 3 or 6
+- Modern keyboard shortcut recording
 
 License: [GNU General Public License v3](http://www.gnu.org/licenses/gpl.html)
 
-Change logs: change logs are versioned in the [repository](https://github.com/fikovnik/ShiftIt/tree/develop/release) as well.
-
-
 ## Download
 
-A binary build for OSX 10.7+ is available in [releases](https://github.com/fikovnik/ShiftIt/releases).
-
-## Installation
-
-Please note, because the binary is not signed, you'll have to "right click" on the application, click "Open", and subsequently click "Open" in the dialog that appears.  You only have to do this the first time you launch the newly-downloaded application.
-
-## User guide
-
-ShiftIt installs itself in the menu bar (optionally it can be completely hidden).
-It provides a set of actions that manipulates windows positions and sizes.
-Following is an example of list of actions available:
-
-![Screenshot Menu](https://raw.github.com/fikovnik/ShiftIt/develop/docs/schreenshot-menu.png)
-
-Normally, all Cocoa windows and X11 windows are supported.
-Some applications might not work correctly or not at all.
-There is a [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues).
-If you find any problem not mentioned there, please submit an issue.
+A binary build for macOS 14.6+ is available in [releases](https://github.com/citadelgrad/ShiftIt/releases).
 
 ## Requirements
 
-* OSX 10.7+, 64-bit
+* **macOS 14.6 (Sonoma) or later**
+* Apple Silicon or Intel Mac
 
-The primary development is done on OSX 10.10, but it should be running under OSX 10.7 as well.
+## Installation
+
+1. Download the latest release from the [releases page](https://github.com/citadelgrad/ShiftIt/releases)
+2. Unzip and drag ShiftIt.app to your Applications folder
+3. On first launch, right-click the app and select "Open" to bypass Gatekeeper
+4. Grant Accessibility permissions when prompted (required for window management)
+
+## User Guide
+
+ShiftIt installs itself in the menu bar (optionally it can be completely hidden). It provides a set of actions that manipulate window positions and sizes.
+
+![Screenshot Menu](https://raw.github.com/citadelgrad/ShiftIt/master/docs/schreenshot-menu.png)
+
+### Available Actions
+
+| Action | Default Shortcut | Description |
+|--------|------------------|-------------|
+| Left | ⌃⌥⌘ ← | Move window to left half |
+| Right | ⌃⌥⌘ → | Move window to right half |
+| Top | ⌃⌥⌘ ↑ | Move window to top half |
+| Bottom | ⌃⌥⌘ ↓ | Move window to bottom half |
+| Top Left | ⌃⌥⌘ 1 | Move window to top-left quarter |
+| Top Right | ⌃⌥⌘ 2 | Move window to top-right quarter |
+| Bottom Left | ⌃⌥⌘ 3 | Move window to bottom-left quarter |
+| Bottom Right | ⌃⌥⌘ 4 | Move window to bottom-right quarter |
+| Maximize | ⌃⌥⌘ M | Maximize window |
+| Center | ⌃⌥⌘ C | Center window |
+| Full Screen | ⌃⌥⌘ F | Toggle full screen |
+
+### Ultrawide Monitor Support
+
+ShiftIt includes special actions for ultrawide monitors:
+- **Divide by 3** - Split screen into thirds
+- **Divide by 6** - Split screen into sixths
 
 ## FAQ
-##### How do I turn on/off windows cycling sizes with multiple hotkey presses?
 
-If this feature is on, snapping to the left side of the screen (and top, bottom, and right sides) will resize the window to half of the screen.  If window is then snapped to the same side of the screen, it will resize to one third of the screen, and then two thirds of the screen.
+##### How do I turn on/off window size cycling with multiple hotkey presses?
 
-If the feature is off, additional snappings will have no effect and the window will remain at half of the screen.
+If this feature is on, snapping to the left side of the screen (and top, bottom, and right sides) will resize the window to half of the screen. If the window is then snapped to the same side of the screen, it will resize to one third of the screen, and then two thirds of the screen.
 
-Currently, the only way to accomplish this is by running commands on the command line.  To turn the feature on, run:
-```
+To turn the feature on:
+```sh
 defaults write org.shiftitapp.ShiftIt multipleActionsCycleWindowSizes YES
 ```
-To turn it off, run:
-```
+
+To turn it off:
+```sh
 defaults write org.shiftitapp.ShiftIt multipleActionsCycleWindowSizes NO
 ```
 
-##### I disabled the _Show Icon in Menu Bar_ in the preferences, how can I get it back?
+##### I disabled the "Show Icon in Menu Bar" in the preferences, how can I get it back?
 
 Launch the application again. It will open the preference dialog.
 
-##### I pressed a shortcut, but nothing has happened, why?
+##### I pressed a shortcut, but nothing happened, why?
 
-While most of application windows should work well with ShiftIt, there are some exceptions (like the GTK+ OSX applications). There is a [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). If you find any problem not mentioned in the list, please raise an issue.
-
-##### I pressed a shortcut, something happened, but not what I expected, why?
-
-ShiftIt is based on a Cocoa Accessibility API and sometimes this API can be a bit [fragile](http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html) and not do exactly what it should. In order to help to improve ShiftIt, please submit an issue every time you find some weird behavior. Before you do please consult the [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). Thanks!
-
-##### ShiftIt wants accessibility access on my Mac but my system preferences don't match the instruction, why?
-
-For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
+Make sure ShiftIt has Accessibility permissions. Go to **System Settings** → **Privacy & Security** → **Accessibility** and ensure ShiftIt is enabled.
 
 ##### How to repair Accessibility API permissions?
 
-This can be done either using  the GUI in _System Preferences_ -> _Security & Privacy_ -> _Privacy_ -> _Accessibility_ where it is necessary to check and uncheck the checkbox which is next to ShiftIt in the _Allow the apps below to control your computer_.
-If ShiftIt is not in the list, just drag and drop it there from the `Applications` folder.
-
-![ShiftIt permissions](https://raw.githubusercontent.com/fikovnik/ShiftIt/develop/ShiftIt/AccessibilitySettingsMaverick.png)
-
-Alternatively, this can be also done in a command line, however, this is rather a hack with all potential issues hacks come with.
-
-```sh
-$ sudo sqlite3 '/Library/Application Support/com.apple.TCC/TCC.db' 'update access set allowed=1 where client like "%org.shiftitapp.ShiftIt%"'
-```
-
-For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
-If you've upgraded to 10.10, just uncheck and recheck the box to make things work again.
+Go to **System Settings** → **Privacy & Security** → **Accessibility**, find ShiftIt in the list, and toggle it off then on again. If ShiftIt is not in the list, click the + button and add it from your Applications folder.
 
 ## Development
 
-The repository is based on the git flow model. The development therefore happens in the `develop` branch. Any contribution is welcomed!
+### Local Build
 
-### Local build
-
-To build ShiftIt locally just clone the repository or get the latest snapshot and execute following command in the `ShiftIt` directory:
+To build ShiftIt locally, clone the repository and run:
 
 ```sh
-$ xcodebuild -target ShiftIt -configuration Release
+cd ShiftIt
+xcodebuild -target ShiftIt -configuration Release
 ```
 
-To make a build without X11 support execute following:
+The built app will be at `ShiftIt/build/Release/ShiftIt.app`.
+
+### Making a Release
+
+A release script is provided that handles building, signing, and updating the appcast:
 
 ```sh
-$ xcodebuild -target "ShiftIt NoX11" -configuration Release
+./release/build-release.sh
 ```
 
-### Brew Cask
-To install  ShiftIt using brew you can use the cask.
+This script will:
+1. Build ShiftIt in Release configuration
+2. Create a zip archive
+3. Sign with EdDSA (reads key from macOS Keychain)
+4. Update `release/appcast.xml` with the signature and file size
 
-```
-$ brew install shiftit --cask
-```
+#### Prerequisites
 
-### Making a release
+- EdDSA signing key in macOS Keychain (generated with Sparkle's `generate_keys` tool)
+- Xcode command line tools
 
-First, update the release version in [ShiftIt/ShiftIt-Info.plist](ShiftIt/ShiftIt-Info.plist). *NOTE* the version is in the file twice;
-once under `<key>CFBundleShortVersionString</key>` and again under `<key>CFBundleVersion</key>`.  Make sure you update both!
+#### Environment Variables (for fabfile.py)
 
-Releases are handled using [fabric](http://docs.fabfile.org/en/1.5/). There are some dependencies that can be easily obtained using `pip`:
+If using the legacy fabric-based release system:
 
-* [fabric](http://docs.fabfile.org/en/1.5/) - the build system itself
-* [github3](https://github.com/sigmavirus24/github3.py) - library for GitHub 3 API
-* [pystache](https://github.com/defunkt/pystache) - templates
-
-NOTE: this is Python2 compatible; it will error out under Python3.
-
-Using [pipenv](https://docs.pipenv.org/), a release environment
-can be created with the following command:
-```
-$ pipenv install --two
-$ pipenv shell
-```
-
-Prior to running the commands below, ensure the following environment variables are set:
-
-```
-export SHIFTIT_PRIVATE_KEY=~/.shiftit/dsa_priv.pem.gpg  # get this from the project contributors
-export SHIFTIT_GITHUB_TOKEN=~/.shiftit/github.token.gpg  # this is your personal access token
-export SHIFTIT_GITHUB_USER=fikovnik
+```sh
+export SHIFTIT_GITHUB_USER=citadelgrad
 export SHIFTIT_GITHUB_REPO=ShiftIt
+export SHIFTIT_GITHUB_TOKEN=~/.shiftit/github.token  # your personal access token
 ```
 
-Get your personal access token from [Github's developer settings page](https://github.com/settings/tokens).
+### Project Structure
 
-As you see above, the private key and github token can be gpg-encrypted at rest.  This is optional and they can simply be plain text; just don't suffix the files with `.gpg`.
+```
+ShiftIt/
+├── ShiftIt/                 # Main application source
+│   ├── ShiftIt.xcodeproj   # Xcode project
+│   ├── bin/                # Sparkle signing tools
+│   └── Sparkle.framework/  # Auto-update framework
+├── release/                # Release assets
+│   ├── appcast.xml        # Sparkle update feed
+│   ├── release-notes-*.html
+│   └── build-release.sh   # Release build script
+└── artwork/               # Icons and graphics
+```
 
-The releases are fully automatic which hopefully will help to release more often.
+## Credits
 
-**Available commands**
+- Original ShiftIt by [Aravindkumar Rajendiran](http://code.google.com/p/shiftit/)
+- Rewritten by [Filip Krikava](https://github.com/fikovnik)
+- Modernized by [citadelgrad](https://github.com/citadelgrad)
 
-* `archive` - Archives build
-* `build` - Makes a build by executing xcodebuild
-* `info` - Output all the build properties
-* `release` - Prepare the release: sign the build, generate appcast, generate release notes
-* `release_notes` - Generate release notes
+## Alternatives
 
-After `fab release` instructions about how to create the actual release at github are printed.
-
-Thanks [JetBrains](http://www.jetbrains.com/) for kindly supporting this open source project by providing [AppCode](http://www.jetbrains.com/objc/) IDE.
+If you prefer a more customizable solution, consider [Hammerspoon](http://hammerspoon.org) with the [ShiftIt Spoon](https://github.com/peterklijn/hammerspoon-shiftit).

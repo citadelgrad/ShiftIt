@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcodebuild:*)",
+      "WebFetch(domain:sparkle-project.org)",
+      "WebFetch(domain:sparkle-project.github.io)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nImplement modern KeyboardShortcutRecorder replacing deprecated ShortcutRecorder\n\n- Add KeyboardShortcutRecorder Swift class with full shortcut capture support\n- Fix header imports for ARC compatibility \\(SIScreen.h, SIWindowInfo.h, FMTDefines.h\\)\n- Update PreferencesWindowController to use new recorder with delegate pattern\n- Add Sparkle gentle reminders support for menu bar app in ShiftItAppDelegate\n- Handle Carbon key codes correctly \\(non-sequential function key values\\)\n- Use hitTest/mouseDown overrides for reliable click handling in table views\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(cat:*)",
+      "Bash(security find-generic-password:*)",
+      "Bash(security dump-keychain:*)",
+      "Bash(/Users/scott/projects/ShiftIt/ShiftIt/bin/sign_update:*)",
+      "Bash(chmod:*)",
+      "Bash(./release/build-release.sh:*)",
+      "Bash(open:*)",
+      "Bash(log show:*)",
+      "Bash(otool:*)"
+    ]
+  }
+}

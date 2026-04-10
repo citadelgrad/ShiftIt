@@ -1,0 +1,25 @@
+README.md
+  a8a5ff3976794378 1,38
+.gitignore
+  a8a5ff3976794378 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "19caf7dae3613b0d68f7fcd20dccfde9d98474cf",
+  "prompts": {
+    "a8a5ff3976794378": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f125231f-fd2b-4fc1-8241-731ae5f0365a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Scott Nixon",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 387,
+      "accepted_lines": 9344,
+      "overriden_lines": 0
+    }
+  }
+}

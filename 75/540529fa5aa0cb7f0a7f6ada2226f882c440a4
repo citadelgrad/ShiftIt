@@ -1,0 +1,25 @@
+.github/workflows/ci.yml
+  a67366365ad7b933 16,19
+.github/workflows/release.yml
+  a67366365ad7b933 27,53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "75540529fa5aa0cb7f0a7f6ada2226f882c440a4",
+  "prompts": {
+    "a67366365ad7b933": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "285984b4-5f15-48ac-98ee-b230394809ad",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Scott Nixon",
+      "messages": [],
+      "total_additions": 61,
+      "total_deletions": 87,
+      "accepted_lines": 8340,
+      "overriden_lines": 0
+    }
+  }
+}

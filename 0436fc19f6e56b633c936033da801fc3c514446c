@@ -1,0 +1,48 @@
+"ShiftIt/FMT Tests/FMTGeometryTests.m"
+  a8a5ff3976794378 23,26,34-36,43-44,49,57,64,70-71
+"ShiftIt/FMT Tests/TestStubs.m"
+  a8a5ff3976794378 1-27
+ShiftIt/ShiftIt.xcodeproj/project.pbxproj
+  a8a5ff3976794378 61-66,116,124-126,287,359-361,556-557,655-660,762,784
+"ShiftIt/ShiftIt.xcodeproj/xcshareddata/xcschemes/FMT Tests.xcscheme"
+  a8a5ff3976794378 18,36,57
+"ShiftIt/FMT Tests/DefaultShiftItActionsTests.m"
+  a8a5ff3976794378 1-560
+"ShiftIt/FMT Tests/FMTGeometryExtendedTests.m"
+  a8a5ff3976794378 1-212
+ShiftIt/ShiftIt.xcodeproj/xcshareddata/xcschemes/ShiftIt.xcscheme
+  a8a5ff3976794378 31-33,58-60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "0436fc19f6e56b633c936033da801fc3c514446c",
+  "prompts": {
+    "a67366365ad7b933": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "285984b4-5f15-48ac-98ee-b230394809ad",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Scott Nixon",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 8191,
+      "overriden_lines": 0
+    },
+    "a8a5ff3976794378": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f125231f-fd2b-4fc1-8241-731ae5f0365a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Scott Nixon",
+      "messages": [],
+      "total_additions": 844,
+      "total_deletions": 440,
+      "accepted_lines": 845,
+      "overriden_lines": 0
+    }
+  }
+}

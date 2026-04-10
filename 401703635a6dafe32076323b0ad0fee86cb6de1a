@@ -1,0 +1,44 @@
+"ShiftIt/FMT Tests/DefaultShiftItActionsTests.m"
+  a8a5ff3976794378 1-560
+ShiftIt/ShiftIt.xcodeproj/xcshareddata/xcschemes/ShiftIt.xcscheme
+  a8a5ff3976794378 31-33,58-60
+"ShiftIt/FMT Tests/FMTGeometryExtendedTests.m"
+  a8a5ff3976794378 1-212
+"ShiftIt/FMT Tests/TestStubs.m"
+  a8a5ff3976794378 1-27
+ShiftIt/ShiftIt.xcodeproj/project.pbxproj
+  a8a5ff3976794378 61-66,124-126,359-361,655-660
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "401703635a6dafe32076323b0ad0fee86cb6de1a",
+  "prompts": {
+    "a67366365ad7b933": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "285984b4-5f15-48ac-98ee-b230394809ad",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Scott Nixon",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 8346,
+      "overriden_lines": 0
+    },
+    "a8a5ff3976794378": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f125231f-fd2b-4fc1-8241-731ae5f0365a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Scott Nixon",
+      "messages": [],
+      "total_additions": 823,
+      "total_deletions": 22,
+      "accepted_lines": 823,
+      "overriden_lines": 0
+    }
+  }
+}

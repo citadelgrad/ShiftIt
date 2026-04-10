@@ -1,0 +1,29 @@
+"ShiftIt/FMT Tests/FMTGeometryTests.m"
+  a67366365ad7b933 23,26,34-36,43-44,49,57,64,70-71
+ShiftIt/ShiftIt.xcodeproj/project.pbxproj
+  a67366365ad7b933 111,280,547-548,760,782
+ShiftIt/ShiftIt.xcodeproj/xcshareddata/xcschemes/ShiftIt.xcscheme
+  a67366365ad7b933 32,59
+"ShiftIt/ShiftIt.xcodeproj/xcshareddata/xcschemes/FMT Tests.xcscheme"
+  a67366365ad7b933 18,36,57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "c655073a271306cd7499e8737c740a3c5c1d4a63",
+  "prompts": {
+    "a67366365ad7b933": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "285984b4-5f15-48ac-98ee-b230394809ad",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Scott Nixon",
+      "messages": [],
+      "total_additions": 8403,
+      "total_deletions": 41,
+      "accepted_lines": 8385,
+      "overriden_lines": 0
+    }
+  }
+}

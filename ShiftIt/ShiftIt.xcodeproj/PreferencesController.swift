@@ -469,7 +469,7 @@ struct AboutPreferencesView: View {
             
             // Credits
             VStack(spacing: 8) {
-                Text("Copyright © 2010-2025")
+                Text("Copyright © 2010-\(Calendar.current.component(.year, from: Date()))")
                     .font(.caption)
                     .foregroundColor(.secondary)
                 

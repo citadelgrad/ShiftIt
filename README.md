@@ -1,4 +1,4 @@
-<h1><img src="https://raw.github.com/citadelgrad/ShiftIt/master/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt</h1>
+<h1><img src="https://raw.githubusercontent.com/citadelgrad/ShiftIt/master/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt</h1>
 
 *Managing window size and position in macOS*
 
@@ -35,7 +35,7 @@ A binary build for macOS 14.6+ is available in [releases](https://github.com/cit
 
 ShiftIt installs itself in the menu bar (optionally it can be completely hidden). It provides a set of actions that manipulate window positions and sizes.
 
-![Screenshot Menu](https://raw.github.com/citadelgrad/ShiftIt/master/docs/schreenshot-menu.png)
+![Screenshot Menu](https://raw.githubusercontent.com/citadelgrad/ShiftIt/master/docs/schreenshot-menu.png)
 
 ### Available Actions
 

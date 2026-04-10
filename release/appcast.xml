@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
    <channel>
       <title>ShiftIt Changelog</title>
-      <link>https://raw.github.com/citadelgrad/ShiftIt/master/release/appcast.xml</link>
+      <link>https://raw.githubusercontent.com/citadelgrad/ShiftIt/master/release/appcast.xml</link>
       <language>en</language>
       <item>
          <title>ShiftIt version 2.0.0</title>
          <sparkle:releaseNotesLink>
-            http://htmlpreview.github.com/?https://raw.github.com/citadelgrad/ShiftIt/master/release/release-notes-2.0.0.html
+            https://raw.githubusercontent.com/citadelgrad/ShiftIt/master/release/release-notes-2.0.0.html
          </sparkle:releaseNotesLink>
          <pubDate>Thu, 08 Jan 2026 00:43:14 +0000</pubDate>
          <enclosure

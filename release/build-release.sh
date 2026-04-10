@@ -69,12 +69,12 @@ cat > "$APPCAST_FILE" << EOF
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
    <channel>
       <title>ShiftIt Changelog</title>
-      <link>https://raw.github.com/${GITHUB_REPO}/master/release/appcast.xml</link>
+      <link>https://raw.githubusercontent.com/${GITHUB_REPO}/master/release/appcast.xml</link>
       <language>en</language>
       <item>
          <title>ShiftIt version ${VERSION}</title>
          <sparkle:releaseNotesLink>
-            http://htmlpreview.github.com/?https://raw.github.com/${GITHUB_REPO}/master/release/release-notes-${VERSION}.html
+            https://raw.githubusercontent.com/${GITHUB_REPO}/master/release/release-notes-${VERSION}.html
          </sparkle:releaseNotesLink>
          <pubDate>${PUB_DATE}</pubDate>
          <enclosure

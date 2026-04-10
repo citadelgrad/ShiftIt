@@ -45,6 +45,6 @@
 	<key>SUEnableSystemProfiling</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://raw.github.com/citadelgrad/ShiftIt/master/release/appcast.xml</string>
+	<string>https://raw.githubusercontent.com/citadelgrad/ShiftIt/master/release/appcast.xml</string>
 </dict>
 </plist>

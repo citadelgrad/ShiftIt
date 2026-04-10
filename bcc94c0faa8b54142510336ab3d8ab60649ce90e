@@ -1,0 +1,123 @@
+ShiftIt/FMT/FMTHotKey+SRKeyCombo.h
+  a8a5ff3976794378 2
+ShiftIt/FMT/FMTHotKey.m
+  a8a5ff3976794378 2
+ShiftIt/SIActionDelegate.h
+  a8a5ff3976794378 3
+ShiftIt/FMT/FMTHotKey.h
+  a8a5ff3976794378 2
+ShiftIt/DefaultShiftItActions.h
+  a8a5ff3976794378 3
+ShiftIt/FMT/FMTNSError+Extras.h
+  a8a5ff3976794378 2
+ShiftIt/ShiftIt.xcodeproj/PreferencesController.swift
+  a8a5ff3976794378 116-118,472,476-478
+ShiftIt/SIWindow.h
+  a8a5ff3976794378 3
+ShiftIt/DefaultShiftItActions.m
+  a8a5ff3976794378 3
+ShiftIt/FMT/FMTNSDate+Extras.m
+  a8a5ff3976794378 2
+ShiftIt/ShiftIt-Info.plist
+  a8a5ff3976794378 48
+ShiftIt/PreferencesWindowController.h
+  a8a5ff3976794378 3
+ShiftIt/SIDefines.h
+  a8a5ff3976794378 3
+ShiftIt/ShiftItAppDelegate.m
+  a8a5ff3976794378 3
+ShiftIt/WindowGeometryShiftItAction.m
+  a8a5ff3976794378 3
+ShiftIt/ShiftItAppDelegate.h
+  a8a5ff3976794378 3
+ShiftIt/SIWindowDriver.h
+  a8a5ff3976794378 3
+ShiftIt/FMT/FMTNSArray+Functional.h
+  a8a5ff3976794378 2
+ShiftIt/FMT/FMTNSDictionary+Extras.h
+  a8a5ff3976794378 2
+ShiftIt/FMT/FMT.h
+  a8a5ff3976794378 2
+ShiftIt/FMT/FMTNSDate+Extras.h
+  a8a5ff3976794378 2
+ShiftIt/SIWindowManager.m
+  a8a5ff3976794378 3
+ShiftIt/PreferencesWindowController.m
+  a8a5ff3976794378 3,52
+ShiftIt/FMT/FMTUtils.m
+  a8a5ff3976794378 2
+release/build-release.sh
+  a8a5ff3976794378 72,77
+ShiftIt/SIScreen.m
+  a8a5ff3976794378 3
+ShiftIt/WindowGeometryShiftItAction.h
+  a8a5ff3976794378 3
+ShiftIt/AXWindowDriver.m
+  a8a5ff3976794378 3
+ShiftIt/FMT/FMTHotKeyManager.m
+  a8a5ff3976794378 2
+ShiftIt/FMTGeometry.h
+  a8a5ff3976794378 2
+ShiftIt/SIWindowInfo.h
+  a8a5ff3976794378 3
+ShiftIt/SIWindowManager.h
+  a8a5ff3976794378 3
+ShiftIt/FMT/FMTHotKeyManager.h
+  a8a5ff3976794378 2
+ShiftIt/SIWindowContext.h
+  a8a5ff3976794378 3
+ShiftIt/ShiftIt.xcodeproj/ShiftItApp.swift
+  a8a5ff3976794378 151-172,268
+ShiftIt/FMT/FMTNSDictionary+Extras.m
+  a8a5ff3976794378 2
+ShiftIt/FMT/FMTLoginItems.m
+  a8a5ff3976794378 2
+ShiftIt/FMT/FMTNSArray+Functional.m
+  a8a5ff3976794378 2
+ShiftIt/ShiftItApp.h
+  a8a5ff3976794378 3
+ShiftIt/SIAdjacentRectangles.h
+  a8a5ff3976794378 3
+ShiftIt/FMT/FMTDefines.h
+  a8a5ff3976794378 2
+ShiftIt/SIScreen.h
+  a8a5ff3976794378 3
+ShiftIt/FMT/FMTLoginItems.h
+  a8a5ff3976794378 2
+ShiftIt/FMT/FMTNSError+Extras.m
+  a8a5ff3976794378 2
+ShiftIt/ShiftIt.h
+  a8a5ff3976794378 3
+release/appcast.xml
+  a8a5ff3976794378 5,10
+ShiftIt/FMT/FMTHotKey+SRKeyCombo.m
+  a8a5ff3976794378 2
+ShiftIt/SIAdjacentRectangles.m
+  a8a5ff3976794378 3
+ShiftIt/FMT/FMTUtils.h
+  a8a5ff3976794378 2
+ShiftIt/AXWindowDriver.h
+  a8a5ff3976794378 3
+ShiftIt/FMTGeometry.m
+  a8a5ff3976794378 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "bcc94c0faa8b54142510336ab3d8ab60649ce90e",
+  "prompts": {
+    "a8a5ff3976794378": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f125231f-fd2b-4fc1-8241-731ae5f0365a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Scott Nixon",
+      "messages": [],
+      "total_additions": 932,
+      "total_deletions": 503,
+      "accepted_lines": 10273,
+      "overriden_lines": 0
+    }
+  }
+}

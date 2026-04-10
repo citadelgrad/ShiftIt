@@ -111,6 +111,7 @@ jobs:
             CODE_SIGN_IDENTITY="Developer ID Application" \
             DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
             OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH" \
+            ENABLE_HARDENED_RUNTIME=YES \
             build | xcpretty || exit 1
 
       - name: Verify code signature
@@ -133,6 +134,7 @@ jobs:
       # --- Notarize ---
 
       - name: Notarize app
+        id: notarize
         env:
           APPLE_ID: ${{ secrets.NOTARY_APPLE_ID }}
           NOTARY_PASSWORD: ${{ secrets.NOTARY_PASSWORD }}
@@ -141,11 +143,30 @@ jobs:
         run: |
           ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_NAME"
 
-          xcrun notarytool submit "$ARCHIVE_PATH" \
+          # Submit and capture the submission ID
+          SUBMIT_OUTPUT=$(xcrun notarytool submit "$ARCHIVE_PATH" \
             --apple-id "$APPLE_ID" \
             --password "$NOTARY_PASSWORD" \
             --team-id "$APPLE_TEAM_ID" \
-            --wait --timeout 30m
+            --wait --timeout 30m 2>&1) || true
+
+          echo "$SUBMIT_OUTPUT"
+
+          # Extract submission ID for log fetching
+          SUBMISSION_ID=$(echo "$SUBMIT_OUTPUT" | grep -m1 'id:' | awk '{print $2}')
+          echo "submission_id=$SUBMISSION_ID" >> "$GITHUB_OUTPUT"
+
+          # Check if notarization succeeded
+          if echo "$SUBMIT_OUTPUT" | grep -q "status: Accepted"; then
+            echo "Notarization accepted"
+          else
+            echo "::error::Notarization failed. Fetching log..."
+            xcrun notarytool log "$SUBMISSION_ID" \
+              --apple-id "$APPLE_ID" \
+              --password "$NOTARY_PASSWORD" \
+              --team-id "$APPLE_TEAM_ID" || true
+            exit 1
+          fi
 
           # Staple the ticket to the app, then re-archive
           APP_PATH="$ARCHIVE_DIR/Build/Products/Release/ShiftIt.app"

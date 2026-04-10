@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2717BEAA14994C120012EF87"
-               BuildableName = "FMT Tests.octest"
+               BuildableName = "FMT Tests.xctest"
                BlueprintName = "FMT Tests"
                ReferencedContainer = "container:ShiftIt.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2717BEAA14994C120012EF87"
-               BuildableName = "FMT Tests.octest"
+               BuildableName = "FMT Tests.xctest"
                BlueprintName = "FMT Tests"
                ReferencedContainer = "container:ShiftIt.xcodeproj">
             </BuildableReference>
@@ -54,7 +54,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2717BEAA14994C120012EF87"
-            BuildableName = "FMT Tests.octest"
+            BuildableName = "FMT Tests.xctest"
             BlueprintName = "FMT Tests"
             ReferencedContainer = "container:ShiftIt.xcodeproj">
          </BuildableReference>

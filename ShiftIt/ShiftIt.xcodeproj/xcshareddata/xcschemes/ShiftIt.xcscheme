@@ -28,9 +28,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2717BDAA1498B7FD0012EF87"
-               BuildableName = "ShiftIt Tests.octest"
-               BlueprintName = "ShiftIt Tests"
+               BlueprintIdentifier = "2717BEAA14994C120012EF87"
+               BuildableName = "FMT Tests.xctest"
+               BlueprintName = "FMT Tests"
                ReferencedContainer = "container:ShiftIt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -55,9 +55,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2717BDAA1498B7FD0012EF87"
-               BuildableName = "ShiftIt Tests.octest"
-               BlueprintName = "ShiftIt Tests"
+               BlueprintIdentifier = "2717BEAA14994C120012EF87"
+               BuildableName = "FMT Tests.xctest"
+               BlueprintName = "FMT Tests"
                ReferencedContainer = "container:ShiftIt.xcodeproj">
             </BuildableReference>
          </TestableReference>

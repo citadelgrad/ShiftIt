@@ -40,7 +40,6 @@
 		D231C35F2F05C169009793DE /* ShortcutRecorderStubs.m in Sources */ = {isa = PBXBuildFile; fileRef = D231C35E2F05C169009793DE /* ShortcutRecorderStubs.m */; };
 		D231C3632F05CAD5009793DE /* ModernWindowDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D231C3622F05C97E009793DE /* ModernWindowDriverTests.swift */; };
 		D231C3652F05CBF9009793DE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D231C3642F05CBF9009793DE /* XCTest.framework */; };
-		D231C3692F05D6D5009793DE /* Sparkle.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D231C3672F05D6D5009793DE /* Sparkle.xcframework */; };
 		D2540B3A2F059FCE0099EECB /* ModernWindowDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2540B392F059FCE0099EECB /* ModernWindowDriver.swift */; };
 		D2540B3F2F05A02C0099EECB /* WindowManagerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2540B3E2F05A02C0099EECB /* WindowManagerExample.swift */; };
 		D2540B412F05A0520099EECB /* ModernWindowDriverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2540B402F05A0520099EECB /* ModernWindowDriverTests.swift */; };
@@ -59,6 +58,12 @@
 		F2DC61EF1127C862000E1A5D /* SIScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5C /* SIScreen.m */; };
 		F2DC61EF1127C862000E1A60 /* SIAdjacentRectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */; };
 		F2DC61EF1127C862000E1A68 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
+		D2C001012F0A000000000001 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
+		D2C001012F0A000000000002 /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
+		D2C001012F0A000000000003 /* WindowGeometryShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */; };
+		D2C001012F0A000000000004 /* TestStubs.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C001022F0A000000000004 /* TestStubs.m */; };
+		D2C001012F0A000000000005 /* DefaultShiftItActionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C001022F0A000000000005 /* DefaultShiftItActionsTests.m */; };
+		D2C001012F0A000000000006 /* FMTGeometryExtendedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C001022F0A000000000006 /* FMTGeometryExtendedTests.m */; };
 		F2DC61EF1127C862000E1A6D /* FMTNSFileManager+DirectoryLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A6C /* FMTNSFileManager+DirectoryLocations.m */; };
 		F2DC61EF1127C862000E1A6F /* FMTNSFileManager+DirectoryLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A6C /* FMTNSFileManager+DirectoryLocations.m */; };
 /* End PBXBuildFile section */
@@ -108,7 +113,7 @@
 		2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSArray+Functional.m"; path = "FMT/FMTNSArray+Functional.m"; sourceTree = "<group>"; };
 		2717BE37149935EC0012EF87 /* FMTNSError+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSError+Extras.h"; path = "FMT/FMTNSError+Extras.h"; sourceTree = "<group>"; };
 		2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSError+Extras.m"; path = "FMT/FMTNSError+Extras.m"; sourceTree = "<group>"; };
-		2717BEAB14994C120012EF87 /* FMT Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FMT Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2717BEAB14994C120012EF87 /* FMT Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FMT Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2717BEAD14994C120012EF87 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		2717BEAF14994C120012EF87 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		2717BEB014994C120012EF87 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -116,6 +121,9 @@
 		2717BEB414994C120012EF87 /* FMT Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FMT Tests-Info.plist"; sourceTree = "<group>"; };
 		2717BEB914994C120012EF87 /* FMTGeometryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMTGeometryTests.m; sourceTree = "<group>"; };
 		2717BEBB14994C120012EF87 /* FMT Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FMT Tests-Prefix.pch"; sourceTree = "<group>"; };
+		D2C001022F0A000000000004 /* TestStubs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestStubs.m; sourceTree = "<group>"; };
+		D2C001022F0A000000000005 /* DefaultShiftItActionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DefaultShiftItActionsTests.m; sourceTree = "<group>"; };
+		D2C001022F0A000000000006 /* FMTGeometryExtendedTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMTGeometryExtendedTests.m; sourceTree = "<group>"; };
 		271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "margin-background-image.png"; sourceTree = "<group>"; };
 		2743F1A2140EFC8E00C23A67 /* SIWindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIWindowDriver.h; sourceTree = "<group>"; };
 		2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowGeometryShiftItAction.h; sourceTree = "<group>"; };
@@ -215,7 +223,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D231C3652F05CBF9009793DE /* XCTest.framework in Frameworks */,
-				D231C3692F05D6D5009793DE /* Sparkle.xcframework in Frameworks */,
 				2717BEAE14994C120012EF87 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,7 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* ShiftIt.app */,
-				2717BEAB14994C120012EF87 /* FMT Tests.octest */,
+				2717BEAB14994C120012EF87 /* FMT Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -349,6 +356,9 @@
 			isa = PBXGroup;
 			children = (
 				2717BEB914994C120012EF87 /* FMTGeometryTests.m */,
+				D2C001022F0A000000000006 /* FMTGeometryExtendedTests.m */,
+				D2C001022F0A000000000005 /* DefaultShiftItActionsTests.m */,
+				D2C001022F0A000000000004 /* TestStubs.m */,
 				2717BEB314994C120012EF87 /* Supporting Files */,
 			);
 			path = "FMT Tests";
@@ -536,7 +546,6 @@
 				2717BEA614994C120012EF87 /* Sources */,
 				2717BEA714994C120012EF87 /* Frameworks */,
 				2717BEA814994C120012EF87 /* Resources */,
-				2717BEA914994C120012EF87 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -544,8 +553,8 @@
 			);
 			name = "FMT Tests";
 			productName = "FMT Tests";
-			productReference = 2717BEAB14994C120012EF87 /* FMT Tests.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
+			productReference = 2717BEAB14994C120012EF87 /* FMT Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		8D1107260486CEB800E47090 /* ShiftIt */ = {
 			isa = PBXNativeTarget;
@@ -631,19 +640,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2717BEA914994C120012EF87 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -656,6 +652,12 @@
 				F2DC61EF1127C862000E1A6F /* FMTNSFileManager+DirectoryLocations.m in Sources */,
 				E4BCFDF71237154D17E7FFBC /* FMTError.m in Sources */,
 				D231C3632F05CAD5009793DE /* ModernWindowDriverTests.swift in Sources */,
+				D2C001012F0A000000000001 /* DefaultShiftItActions.m in Sources */,
+				D2C001012F0A000000000002 /* GTMLogger.m in Sources */,
+				D2C001012F0A000000000003 /* WindowGeometryShiftItAction.m in Sources */,
+				D2C001012F0A000000000004 /* TestStubs.m in Sources */,
+				D2C001012F0A000000000005 /* DefaultShiftItActionsTests.m in Sources */,
+				D2C001012F0A000000000006 /* FMTGeometryExtendedTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,9 +757,9 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "FMT Tests/FMT Tests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.fikovnik.projects.FMT.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.shiftitapp.FMT.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
@@ -777,9 +779,9 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "FMT Tests/FMT Tests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.fikovnik.projects.FMT.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.shiftitapp.FMT.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};

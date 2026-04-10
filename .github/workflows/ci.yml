@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Cache SPM packages
+        uses: actions/cache@v5
+        with:
+          path: ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-
+
+      - name: Resolve dependencies
+        run: |
+          xcodebuild -project ShiftIt/ShiftIt.xcodeproj \
+            -scheme ShiftIt \
+            -resolvePackageDependencies
+
+      - name: Build
+        run: |
+          xcodebuild -project ShiftIt/ShiftIt.xcodeproj \
+            -scheme ShiftIt \
+            -configuration Debug \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="-" \
+            build | xcpretty || exit 1
+
+      - name: Test
+        run: |
+          xcodebuild -project ShiftIt/ShiftIt.xcodeproj \
+            -scheme ShiftIt \
+            -configuration Debug \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="-" \
+            test | xcpretty || exit 1

@@ -49,7 +49,7 @@ NSString *const kActionIdentifierKey = @"kActionIdentifierKey";
 NSString *const kHotKeyKeyCodeKey = @"kHotKeyKeyCodeKey";
 NSString *const kHotKeyModifiersKey = @"kHotKeyModifiersKey";
 
-NSString *const kShiftItGithubIssueURL = @"https://github.com/fikovnik/ShiftIt/issues";
+NSString *const kShiftItGithubIssueURL = @"https://github.com/citadelgrad/ShiftIt/issues";
 
 NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 

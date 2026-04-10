@@ -113,6 +113,9 @@ struct GeneralPreferencesView: View {
             Section {
                 Toggle("Show menu bar icon", isOn: $showMenuIcon)
                     .help("Display ShiftIt icon in the menu bar")
+                    .onChange(of: showMenuIcon) { _, _ in
+                        NotificationCenter.default.post(name: .menuBarIconPreferenceChanged, object: nil)
+                    }
                 
                 Toggle("Start at login", isOn: $shouldStartAtLogin)
                     .help("Launch ShiftIt automatically when you log in")
@@ -470,9 +473,9 @@ struct AboutPreferencesView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
-                Link("Visit Website", destination: URL(string: "https://github.com/fikovnik/ShiftIt")!)
-                
-                Link("Report an Issue", destination: URL(string: "https://github.com/fikovnik/ShiftIt/issues")!)
+                Link("Visit Website", destination: URL(string: "https://github.com/citadelgrad/ShiftIt")!)
+
+                Link("Report an Issue", destination: URL(string: "https://github.com/citadelgrad/ShiftIt/issues")!)
             }
             
             Spacer()

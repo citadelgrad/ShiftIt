@@ -148,6 +148,28 @@ class ShiftItApp: NSObject, NSApplicationDelegate {
             name: .showPreferencesRequest,
             object: nil
         )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleMenuBarIconPreferenceChanged),
+            name: .menuBarIconPreferenceChanged,
+            object: nil
+        )
+    }
+
+    @objc private func handleMenuBarIconPreferenceChanged() {
+        let showMenuIcon = defaults.bool(forKey: UserDefaultsKeys.showMenuIcon)
+
+        if showMenuIcon {
+            if menuBarController == nil {
+                menuBarController = MenuBarController(
+                    windowManager: windowManager,
+                    statistics: statistics
+                )
+            }
+        } else {
+            menuBarController = nil
+        }
     }
     
     // MARK: - Accessibility Permission Handling
@@ -243,6 +265,7 @@ enum UserDefaultsKeys {
 
 extension Notification.Name {
     static let showPreferencesRequest = Notification.Name("org.shiftitapp.shiftit.notifications.showPreferences")
+    static let menuBarIconPreferenceChanged = Notification.Name("org.shiftitapp.shiftit.notifications.menuBarIconPreferenceChanged")
 }
 
 // MARK: - Usage Statistics

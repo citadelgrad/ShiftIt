@@ -2,7 +2,7 @@
 name = "shiftit-tools"
 version = "0.1.0"
 description = "Build and release tools for ShiftIt"
-requires-python = ">=3.8.1"
+requires-python = ">=3.12"
 
 dependencies = [
     "asn1crypto>=1.0.0",

@@ -218,9 +218,18 @@ jobs:
         run: |
           ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_NAME"
 
-          SIGN_OUTPUT=$(ShiftIt/bin/sign_update "$ARCHIVE_PATH")
+          # Pass key via stdin (-f -) for compatibility with all sign_update versions
+          SIGN_OUTPUT=$(echo "$SPARKLE_KEY" | ShiftIt/bin/sign_update "$ARCHIVE_PATH" -f -)
+          echo "sign_update output: $SIGN_OUTPUT"
+
           ED_SIGNATURE=$(echo "$SIGN_OUTPUT" | grep -o 'sparkle:edSignature="[^"]*"' | cut -d'"' -f2)
           FILE_LENGTH=$(echo "$SIGN_OUTPUT" | grep -o 'length="[^"]*"' | cut -d'"' -f2)
+
+          # Fallback: some versions output just the signature string
+          if [ -z "$ED_SIGNATURE" ]; then
+            ED_SIGNATURE=$(echo "$SIGN_OUTPUT" | head -1)
+            FILE_LENGTH=$(stat -f%z "$ARCHIVE_PATH")
+          fi
 
           if [ -z "$ED_SIGNATURE" ]; then
             echo "::error::Failed to get EdDSA signature"

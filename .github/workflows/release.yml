@@ -1,0 +1,248 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'version-*'
+
+# Only one release at a time
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: macos-15
+    timeout-minutes: 60
+    environment: release
+
+    env:
+      PROJECT_PATH: ShiftIt/ShiftIt.xcodeproj
+      SCHEME: ShiftIt
+      INFO_PLIST: ShiftIt/ShiftIt-Info.plist
+      ARCHIVE_DIR: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG_NAME="${GITHUB_REF_NAME}"
+          VERSION="${TAG_NAME#version-}"
+
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid version format: $VERSION (expected X.Y.Z)"
+            exit 1
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG_NAME" >> "$GITHUB_OUTPUT"
+          echo "archive_name=ShiftIt-${VERSION}.zip" >> "$GITHUB_OUTPUT"
+
+      - name: Stamp version into Info.plist
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          plutil -replace CFBundleShortVersionString -string "$VERSION" "$INFO_PLIST"
+          plutil -replace CFBundleVersion -string "$VERSION" "$INFO_PLIST"
+          echo "Stamped version $VERSION into $INFO_PLIST"
+
+      - name: Cache SPM packages
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-
+
+      - name: Resolve dependencies
+        run: |
+          xcodebuild -project "$PROJECT_PATH" \
+            -scheme "$SCHEME" \
+            -resolvePackageDependencies
+
+      # --- Signing Setup ---
+
+      - name: Import signing certificate
+        env:
+          CERTIFICATE_P12: ${{ secrets.DEVELOPER_ID_CERTIFICATE_P12 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_CERTIFICATE_PASSWORD }}
+        run: |
+          KEYCHAIN_PATH="$RUNNER_TEMP/signing.keychain-db"
+          KEYCHAIN_PASSWORD="$(openssl rand -base64 32)"
+
+          # Create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          # Import certificate
+          CERT_PATH="$RUNNER_TEMP/certificate.p12"
+          echo "$CERTIFICATE_P12" | base64 --decode > "$CERT_PATH"
+          security import "$CERT_PATH" \
+            -P "$CERTIFICATE_PASSWORD" \
+            -A -t cert -f pkcs12 \
+            -k "$KEYCHAIN_PATH"
+          rm -f "$CERT_PATH"
+
+          # Allow codesign to access the keychain
+          security set-key-partition-list \
+            -S apple-tool:,apple: \
+            -k "$KEYCHAIN_PASSWORD" \
+            "$KEYCHAIN_PATH"
+
+          # Add to search list
+          security list-keychains -d user -s "$KEYCHAIN_PATH" login.keychain-db
+
+          # Export for later steps
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+
+      # --- Build ---
+
+      - name: Build for release
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          xcodebuild -project "$PROJECT_PATH" \
+            -scheme "$SCHEME" \
+            -configuration Release \
+            -derivedDataPath "$ARCHIVE_DIR" \
+            CODE_SIGN_IDENTITY="Developer ID Application" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH" \
+            build | xcpretty || exit 1
+
+      - name: Verify code signature
+        run: |
+          APP_PATH="$ARCHIVE_DIR/Build/Products/Release/ShiftIt.app"
+          codesign --verify --deep --strict "$APP_PATH"
+          echo "Code signature verified"
+
+      # --- Package ---
+
+      - name: Create archive
+        env:
+          ARCHIVE_NAME: ${{ steps.version.outputs.archive_name }}
+        run: |
+          APP_PATH="$ARCHIVE_DIR/Build/Products/Release/ShiftIt.app"
+          ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_NAME"
+          ditto -ck --keepParent "$APP_PATH" "$ARCHIVE_PATH"
+          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_ENV"
+
+      # --- Notarize ---
+
+      - name: Notarize app
+        env:
+          APPLE_ID: ${{ secrets.NOTARY_APPLE_ID }}
+          NOTARY_PASSWORD: ${{ secrets.NOTARY_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          ARCHIVE_NAME: ${{ steps.version.outputs.archive_name }}
+        run: |
+          ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_NAME"
+
+          xcrun notarytool submit "$ARCHIVE_PATH" \
+            --apple-id "$APPLE_ID" \
+            --password "$NOTARY_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --wait --timeout 30m
+
+          # Staple the ticket to the app, then re-archive
+          APP_PATH="$ARCHIVE_DIR/Build/Products/Release/ShiftIt.app"
+          xcrun stapler staple "$APP_PATH"
+          rm -f "$ARCHIVE_PATH"
+          ditto -ck --keepParent "$APP_PATH" "$ARCHIVE_PATH"
+
+      # --- Sparkle Signing ---
+
+      - name: Sign with Sparkle EdDSA
+        id: sparkle
+        env:
+          SPARKLE_KEY: ${{ secrets.SPARKLE_ED_KEY }}
+          ARCHIVE_NAME: ${{ steps.version.outputs.archive_name }}
+        run: |
+          ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_NAME"
+
+          SIGN_OUTPUT=$(ShiftIt/bin/sign_update "$ARCHIVE_PATH")
+          ED_SIGNATURE=$(echo "$SIGN_OUTPUT" | grep -o 'sparkle:edSignature="[^"]*"' | cut -d'"' -f2)
+          FILE_LENGTH=$(echo "$SIGN_OUTPUT" | grep -o 'length="[^"]*"' | cut -d'"' -f2)
+
+          if [ -z "$ED_SIGNATURE" ]; then
+            echo "::error::Failed to get EdDSA signature"
+            exit 1
+          fi
+
+          echo "signature=$ED_SIGNATURE" >> "$GITHUB_OUTPUT"
+          echo "length=$FILE_LENGTH" >> "$GITHUB_OUTPUT"
+
+      # --- Update Appcast ---
+
+      - name: Generate appcast.xml
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          ARCHIVE_NAME: ${{ steps.version.outputs.archive_name }}
+          ED_SIGNATURE: ${{ steps.sparkle.outputs.signature }}
+          FILE_LENGTH: ${{ steps.sparkle.outputs.length }}
+        run: |
+          PUB_DATE=$(date -u "+%a, %d %b %Y %H:%M:%S +0000")
+          GITHUB_REPO="citadelgrad/ShiftIt"
+
+          cat > release/appcast.xml << APPCAST_EOF
+          <?xml version="1.0" encoding="utf-8"?>
+          <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+             <channel>
+                <title>ShiftIt Changelog</title>
+                <link>https://raw.githubusercontent.com/${GITHUB_REPO}/main/release/appcast.xml</link>
+                <language>en</language>
+                <item>
+                   <title>ShiftIt version ${VERSION}</title>
+                   <sparkle:releaseNotesLink>
+                      https://raw.githubusercontent.com/${GITHUB_REPO}/main/release/release-notes-${VERSION}.html
+                   </sparkle:releaseNotesLink>
+                   <pubDate>${PUB_DATE}</pubDate>
+                   <enclosure
+                      url="https://github.com/${GITHUB_REPO}/releases/download/version-${VERSION}/${ARCHIVE_NAME}"
+                      sparkle:version="${VERSION}"
+                      length="${FILE_LENGTH}"
+                      type="application/octet-stream"
+                      sparkle:edSignature="${ED_SIGNATURE}" />
+                   <sparkle:minimumSystemVersion>14.6</sparkle:minimumSystemVersion>
+                </item>
+             </channel>
+          </rss>
+          APPCAST_EOF
+
+      - name: Commit appcast update
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          git add release/appcast.xml
+          git commit -m "Update appcast.xml for version $VERSION"
+          git push origin main
+
+      # --- GitHub Release ---
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.version.outputs.tag }}
+          ARCHIVE_NAME: ${{ steps.version.outputs.archive_name }}
+        run: |
+          ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_NAME"
+
+          gh release create "$TAG" "$ARCHIVE_PATH" \
+            --title "ShiftIt $VERSION" \
+            --generate-notes
+
+      # --- Cleanup ---
+
+      - name: Cleanup keychain
+        if: always()
+        run: |
+          if [ -f "$KEYCHAIN_PATH" ]; then
+            security delete-keychain "$KEYCHAIN_PATH"
+          fi
